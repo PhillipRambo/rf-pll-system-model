@@ -1,0 +1,39 @@
+anchors:
+  rx:
+    nf_db: 5.2  # measured at IC input, 5.15–5.35 GHz band
+    sensitivity_dbm_mcs54: -75  # BER=1e-5, chip/LNA input
+
+    gain_db:
+      min: 20
+      max: 79
+
+    p1db_dbm_min_gain: -20  # RX path P1dB at minimum gain
+
+    bands_ghz:
+      - [5.15, 5.35]
+      - [5.725, 5.825]
+
+    channel_bw_hz: 20e6  # 802.11a channel BW (system assumption)
+
+  tx:
+    output_p1db_dbm: 6  # TX output P1dB (chip output)
+
+    evm_db_mcs54:
+      pout_dbm: -5
+      evm_db: -33  # measured EVM at 54 Mb/s
+
+  lo:
+    phase_noise_dbc_hz_at_offset:
+      offset_hz: 1e6
+      L_dbc_hz: -115
+
+    integrated_phase_noise_deg_rms:
+      f1_hz: 1e3
+      f2_hz: 1e7
+      deg_rms: 0.8
+
+requirements:
+  tx:
+    evm_db_mcs54_required: -25
+  rx:
+    sensitivity_dbm_mcs54_required: -65
