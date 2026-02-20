@@ -1,0 +1,10 @@
+Metadata-Version: 2.4
+Name: rfmodel
+Version: 0.1.0
+Summary: RF system and PLL modeling framework
+Requires-Python: >=3.10
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: pyyaml
+Requires-Dist: matplotlib
+Dynamic: license-file

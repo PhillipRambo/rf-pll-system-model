@@ -40,7 +40,8 @@ class Pipeline:
 
     def reset(self, seed: Optional[int] = None) -> None:
         """
-        Resets all blocks.
+        Resets all blocks. If seed is provided, you can choose a scheme later.
+        For now, just pass the same seed to all blocks.
         """
         for b in self.blocks:
             b.reset(seed=seed)

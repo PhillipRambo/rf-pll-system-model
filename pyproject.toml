@@ -1,0 +1,15 @@
+[project]
+name = "rfmodel"
+version = "0.1.0"
+description = "RF system and PLL modeling framework"
+requires-python = ">=3.10"
+
+dependencies = [
+    "numpy",
+    "pyyaml",
+    "matplotlib",
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"

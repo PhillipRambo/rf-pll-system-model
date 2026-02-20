@@ -36,6 +36,19 @@ class Signal:
 Signal is an immutable container for discrete-time samples and their sampling metadata.
 You create it with a NumPy array and a sample rate, then pass it through processing steps that return modified copies instead of changing fields in place.
 
+Key points:
+-x holds the samples (real or complex NumPy array).
+-fs_hz is the sampling rate.
+-fc_hz is optional center frequency metadata.
+
+::: Fields cannot be reassigned after creation (frozen=True).
+
+::: Use copy_with(...) to create a modified version.
+
+::: ensure_complex() converts samples to complex dtype if needed.
+
+::: n_samples returns the number of samples.
+
 Example:
 
 import numpy as np

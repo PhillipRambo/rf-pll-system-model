@@ -1,0 +1,14 @@
+pipeline:
+  - type: lna
+    name: lna1
+    seed: 1
+    params:
+      gain_db: 15.0
+      nf_db: 3.0
+
+  - type: lna
+    name: lna2
+    seed: 2
+    params:
+      gain_db: 10.0
+      nf_db: 5.0

@@ -1,0 +1,17 @@
+# Antenna from MobileMark Antenna Solutions
+# Link: https://docs.rs-online.com/714e/0900766b812d6d7a.pdf
+# for all 802.11 applications,
+
+specs:
+  bands_ghz:
+    - [2.4, 2.5]
+    - [4.9, 6]
+
+  gain_db: 2 # dBi
+
+  VSWR: 2.5  # 2.5:1
+
+  Impedance: 50  # Ohms
+
+
+
