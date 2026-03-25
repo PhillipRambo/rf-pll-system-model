@@ -1,0 +1,8 @@
+pipeline:
+  - type: lna
+    name: lna1
+    seed: 1
+    params:
+      gain_db: 10
+      nf_db: 5
+      IP3_dbm: 20

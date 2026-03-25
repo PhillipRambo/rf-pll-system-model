@@ -1,0 +1,17 @@
+pipeline:
+  - type: channel
+    name: chan1
+    blocks:
+      - type: pathloss
+        name: pl1
+        params:
+          freq_hz: 1.0e9
+          distance_m: 100.0
+          tx_gain_db: 0.0
+          rx_gain_db: 0.0
+
+      - type: awgn
+        name: awgn1
+        seed: 123
+        params:
+          snr_db: 20.0

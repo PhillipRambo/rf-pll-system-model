@@ -1,0 +1,7 @@
+pipeline:
+  - type: pa
+    name: pa1
+    params:
+      gain_db: 20.0
+      p1db_out_dbm: 27.0
+      smoothness_p: 2.0

@@ -6,6 +6,10 @@ src/rfmodel.egg-info/SOURCES.txt
 src/rfmodel.egg-info/dependency_links.txt
 src/rfmodel.egg-info/requires.txt
 src/rfmodel.egg-info/top_level.txt
+src/rfmodel/channel/AWGN.py
+src/rfmodel/channel/channel.py
+src/rfmodel/channel/path_loss.py
+src/rfmodel/channel/registry.py
 src/rfmodel/comms/OFDM_block.py
 src/rfmodel/comms/QAM_modulator.py
 src/rfmodel/comms/__init__.py
@@ -30,6 +34,7 @@ src/rfmodel/plot_utils/Spectrum_plot.py
 src/rfmodel/plot_utils/__init__.py
 src/rfmodel/plot_utils/spectrum_plot.py
 src/rfmodel/rf/LNA.py
+src/rfmodel/rf/PA.py
 src/rfmodel/rf/__init__.py
 src/rfmodel/rf/registry.py
 src/rfmodel/system/__init__.py
