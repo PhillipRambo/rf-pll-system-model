@@ -14,6 +14,7 @@ src/rfmodel/comms/OFDM_block.py
 src/rfmodel/comms/QAM_modulator.py
 src/rfmodel/comms/__init__.py
 src/rfmodel/comms/channel.py
+src/rfmodel/comms/pseudorandom_NGR.py
 src/rfmodel/core/__init__.py
 src/rfmodel/core/block.py
 src/rfmodel/core/config.py

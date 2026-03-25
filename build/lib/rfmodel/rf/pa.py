@@ -54,9 +54,7 @@ class PABlock(Block):
         r_lin_1dB = r_out_1dB / c
 
         # Solve Rapp parameter Asat so that compression is exactly 1 dB there
-        # r_out = r_lin / (1 + (r_lin / Asat)^(2p))^(1/(2p))
-        # => c = 1 / (1 + (r_lin / Asat)^(2p))^(1/(2p))
-        # => Asat = r_lin / (c^(-2p) - 1)^(1/(2p))
+  
         self.Asat = r_lin_1dB / ((c ** (-2.0 * self.p) - 1.0) ** (1.0 / (2.0 * self.p)))
 
     def process(self, s: Signal) -> Signal:
