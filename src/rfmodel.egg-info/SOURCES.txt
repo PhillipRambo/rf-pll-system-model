@@ -26,15 +26,13 @@ src/rfmodel/core/signal.py
 src/rfmodel/core/units.py
 src/rfmodel/meas/__init__.py
 src/rfmodel/meas/spectrum_analyser.py
-src/rfmodel/pll/__init__.py
-src/rfmodel/pll/masks.py
-src/rfmodel/pll/pll_loop.py
-src/rfmodel/pll/spurs.py
 src/rfmodel/plot_utils/OFDM_plots.py
 src/rfmodel/plot_utils/Spectrum_plot.py
 src/rfmodel/plot_utils/__init__.py
+src/rfmodel/plot_utils/plot_block_diagram.py
 src/rfmodel/plot_utils/spectrum_plot.py
 src/rfmodel/rf/LNA.py
+src/rfmodel/rf/Mixer_Block.py
 src/rfmodel/rf/PA.py
 src/rfmodel/rf/__init__.py
 src/rfmodel/rf/registry.py

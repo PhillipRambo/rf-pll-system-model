@@ -1,0 +1,29 @@
+pipeline:
+  - type: pa
+    name: PA_TX
+    params:
+      gain_db: 20.0        
+      p1db_out_dbm: 23.0    
+      smoothness_p: 2.0
+
+  - type: pathloss
+    name: PathLoss
+    params:
+      freq_hz: 5e9
+      distance_m: 2.0      
+      tx_ant_gain_db: 2.15     
+      rx_ant_gain_db: 2.15      
+
+  - type: awgn
+    name: AWGN
+    seed: 123
+    params:
+      snr_db: 25.0         
+
+  - type: lna
+    name: LNA
+    seed: 1
+    params:
+      gain_db: 20.0         
+      nf_db: 1.5            
+      IP3_dbm: -5.0         

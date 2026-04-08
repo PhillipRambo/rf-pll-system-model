@@ -33,3 +33,30 @@ def _build_pa(cfg: dict) -> PABlock:
         smoothness_p=float(p.get("smoothness_p", 2.0)),
     )
     return PABlock(name=name, params=params)
+
+@register_block("mixer")
+def _build_mixer(cfg: dict) -> MixerBlock:
+    name = cfg["name"]
+    seed = cfg.get("seed", None)
+    p = cfg.get("params", {})
+
+    # Handle Nested PLL Parameters if they exist in YAML
+    pll_cfg = p.get("pll")
+    pll_params = None
+    if pll_cfg:
+        pll_params = PLLParams(
+            phase_noise_std=float(pll_cfg.get("phase_noise_std", 0.001)),
+            freq_error_hz=float(pll_cfg.get("freq_error_hz", 0.0))
+        )
+
+    params = MixerParams(
+        gain_db=float(p["gain_db"]),
+        iip3_dbm=float(p["iip3_dbm"]),
+        nf_db=float(p["nf_db"]),
+        iq_amp_imb_db=float(p.get("iq_amp_imb_db", 0.0)),
+        iq_phase_imb_deg=float(p.get("iq_phase_imb_deg", 0.0)),
+        dc_offset_complex=complex(p.get("dc_offset_complex", 0j)),
+        pll=pll_params
+    )
+    
+    return MixerBlock(name=name, params=params, seed=seed)

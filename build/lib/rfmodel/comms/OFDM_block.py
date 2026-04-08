@@ -101,3 +101,30 @@ class OFDMModulator(Block):
         })
 
         return s.copy_with(x=y, meta=meta)
+    
+    def demodulate(self, s: Signal) -> Signal:
+        """OFDM demodulation: time-domain samples → QAM symbols"""
+        x = np.asarray(s.x)
+
+        # 1. Calculate the total length of one OFDM symbol (FFT + CP)
+        n_total = self.n_fft + self.cp_len
+        
+        # 2. Reshape into individual OFDM symbols
+        symbols = x.reshape(-1, n_total)
+        qam_blocks = []
+
+        for sym in symbols:
+            # 3. Remove cyclic prefix
+            sym_no_cp = sym[self.cp_len:] if self.cp_len > 0 else sym
+            
+            # 4. FFT to move from Time Domain back to Frequency Domain
+            Xk = np.fft.fft(sym_no_cp)
+            
+            if self.params.normalize_ifft:
+                Xk = Xk / np.sqrt(self.n_fft)
+                
+            # 5. Extract only the active subcarriers (the data)
+            qam_blocks.append(Xk[self.active_bins])
+
+        y = np.concatenate(qam_blocks)
+        return s.copy_with(x=y)

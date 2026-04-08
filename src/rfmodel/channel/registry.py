@@ -35,8 +35,8 @@ def _build_pathloss(cfg: dict) -> PathLossBlock:
     params = PathLossParams(
         freq_hz=float(p["freq_hz"]),
         distance_m=float(p["distance_m"]),
-        tx_gain_db=float(p.get("tx_gain_db", 0.0)),
-        rx_gain_db=float(p.get("rx_gain_db", 0.0)),
+        tx_ant_gain_db=float(p.get("tx_ant_gain_db", 0.0)),
+        rx_ant_gain_db=float(p.get("rx_ant_gain_db", 0.0)),
     )
     return PathLossBlock(name=name, params=params)
 
