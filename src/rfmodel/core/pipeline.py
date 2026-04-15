@@ -31,6 +31,9 @@ class Pipeline:
         idx = self._index_of(name)
         self.blocks.pop(idx)
 
+    def get(self, name: str) -> Block:
+        return self.blocks[self._index_of(name)]
+
     def replace(self, name: str, new_block: Block) -> None:
         idx = self._index_of(name)
         self.blocks[idx] = new_block

@@ -32,7 +32,7 @@ src/rfmodel/plot_utils/__init__.py
 src/rfmodel/plot_utils/plot_block_diagram.py
 src/rfmodel/plot_utils/spectrum_plot.py
 src/rfmodel/rf/LNA.py
-src/rfmodel/rf/Mixer_Block.py
+src/rfmodel/rf/Mixer_PLL_block.py
 src/rfmodel/rf/PA.py
 src/rfmodel/rf/__init__.py
 src/rfmodel/rf/registry.py

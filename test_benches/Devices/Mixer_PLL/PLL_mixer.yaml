@@ -1,0 +1,13 @@
+pipeline:
+  - type: mixer
+    name: mixer_and_pll
+    seed: 1
+    params:
+      gain_db: 0
+      iip3_dbm: 30
+      nf_db: 5
+
+      pll:
+        VCO_PhaseNoise: [-90, 1e6]   # [dBc, f_offset]
+        LF_noise_floor: -140
+        loop_bandwidth: 10e3

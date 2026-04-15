@@ -23,7 +23,7 @@ class PLL:
     def __init__(self, params: PLLParams, rng):
         self.p = params
         self._rng = rng
-        self.alpha = 10**(self.p.VCO_Phase_Noise_dBc[0] / 10) * (self.p.VCO_Phase_Noise_dBc[1])**2
+        self.alpha = 10**(float(self.p.VCO_Phase_Noise_dBc[0]) / 10) * (float(self.p.VCO_Phase_Noise_dBc[1]))**2
         self.SLF = 10**(self.p.SLF_dBc / 10)
 
     def get_psd(self, f: np.ndarray) -> np.ndarray:
@@ -46,10 +46,11 @@ class PLL:
         
         #Get the PSD for these specific frequencies
         S_phi = self.get_psd(f)
+        S_phi[0] = S_phi[1]
         
         #Convert PSD to frequency-domain noise (amplitude scaling)
         phi_f = (self._rng.standard_normal(len(f)) + 1j * self._rng.standard_normal(len(f)))
-        phi_f *= np.sqrt(S_phi * fs / 2.0) 
+        phi_f *= np.sqrt(S_phi * df) 
         
         #Transform to time domain to get phase noise phi(t)
         phi_t = np.fft.irfft(phi_f, n=N)
@@ -74,8 +75,10 @@ class MixerBlock(Block):
         super().__init__(name=name)
         self.params = params
         self._rng = get_rng(seed)
-        self.pll = PLL(self.params.pll, self._rng) if self.params.pll else None
-
+        if self.params.pll is not None:
+            self.pll = PLL(self.params.pll, self._rng)
+        else:
+            self.pll = None
     def process(self, s: Signal) -> Signal:
         p = self.params
         x = s.x

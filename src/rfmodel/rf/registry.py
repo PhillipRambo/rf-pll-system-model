@@ -4,7 +4,7 @@ import numpy as np
 from rfmodel.core.factory import register_block
 from rfmodel.rf.LNA import LNABlock, LNAParams
 from rfmodel.rf.PA import PABlock, PAParams
-
+from rfmodel.rf.Mixer_PLL_block import MixerBlock, MixerParams, PLLParams
 
 @register_block("lna")
 def _build_lna(cfg: dict) -> LNABlock:
@@ -45,10 +45,13 @@ def _build_mixer(cfg: dict) -> MixerBlock:
     pll_params = None
     if pll_cfg:
         pll_params = PLLParams(
-            phase_noise_std=float(pll_cfg.get("phase_noise_std", 0.001)),
-            freq_error_hz=float(pll_cfg.get("freq_error_hz", 0.0))
+            VCO_Phase_Noise_dBc=tuple(pll_cfg.get("VCO_PhaseNoise")),
+            SLF_dBc=float(pll_cfg.get("LF_noise_floor")),
+            f_L=float(pll_cfg.get("loop_bandwidth")),
+            Tu=float(pll_cfg.get("Tu", 0.0)),  # must exist if weighting is used
+            enable_ofdm_weighting=bool(pll_cfg.get("enable_ofdm_weighting", False)),
+            f_range_limits=tuple(pll_cfg.get("Foffset_Range", (10, 1e10))),
         )
-
     params = MixerParams(
         gain_db=float(p["gain_db"]),
         iip3_dbm=float(p["iip3_dbm"]),
@@ -60,3 +63,4 @@ def _build_mixer(cfg: dict) -> MixerBlock:
     )
     
     return MixerBlock(name=name, params=params, seed=seed)
+
