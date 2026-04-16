@@ -7,9 +7,6 @@ from rfmodel.core.random import get_rng
 from rfmodel.core.signal import Signal
 from rfmodel.core.block import Block
 
-from dataclasses import dataclass, field
-import numpy as np
-
 @dataclass
 class PLLParams:
     VCO_Phase_Noise_dBc: tuple[float, float] # Takes phase noise in dBc at offset frequency [PN,f_offset]
@@ -46,12 +43,16 @@ class PLL:
         
         #Get the PSD for these specific frequencies
         S_phi = self.get_psd(f)
-        S_phi[0] = S_phi[1]
-        
+
         #Convert PSD to frequency-domain noise (amplitude scaling)
+        # irfft divides by N, so to satisfy Parseval:
+        #   mean(phi_t²) = (2/N²) * Σ|phi_f|²  =!= Σ S_phi*df
+        # requires E[|phi_f[k]|²] = S_phi[k] * df * N²/2
+        # (randn + j*randn) has E[|·|²] = 2, so scale by sqrt(S_phi*df) * N/2
         phi_f = (self._rng.standard_normal(len(f)) + 1j * self._rng.standard_normal(len(f)))
-        phi_f *= np.sqrt(S_phi * df) 
-        
+        phi_f *= np.sqrt(S_phi * df) * (N / 2)
+        phi_f[0] = 0.0  # zero DC: a constant phase offset has no physical meaning
+
         #Transform to time domain to get phase noise phi(t)
         phi_t = np.fft.irfft(phi_f, n=N)
         

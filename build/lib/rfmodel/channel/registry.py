@@ -15,6 +15,7 @@ def _build_channel(cfg: dict) -> ChannelBlock:
     blocks = [build_block(bcfg) for bcfg in block_cfgs]
     return ChannelBlock(name=name, blocks=blocks)
 
+
 @register_block("awgn")
 def _build_awgn(cfg: dict) -> AWGNBlock:
     name = cfg["name"]
@@ -39,13 +40,3 @@ def _build_pathloss(cfg: dict) -> PathLossBlock:
         rx_ant_gain_db=float(p.get("rx_ant_gain_db", 0.0)),
     )
     return PathLossBlock(name=name, params=params)
-
-
-
-@register_block("channel")
-def _build_channel(cfg: dict) -> ChannelBlock:
-    name = cfg["name"]
-    block_cfgs = cfg.get("blocks", [])
-
-    blocks = [build_block(bcfg) for bcfg in block_cfgs]
-    return ChannelBlock(name=name, blocks=blocks)

@@ -13,40 +13,15 @@ def plot_bits(bits, n_bits=80, title="Input bits"):
     plt.show()
 
 
-def plot_constellation(x, ref=None, title="QAM constellation", show_evm=False):
+def plot_constellation(x, title="QAM constellation"):
     x = np.asarray(x)
-
     plt.figure(figsize=(5, 5))
-    plt.plot(np.real(x), np.imag(x), ".", alpha=0.6)
-
+    plt.plot(np.real(x), np.imag(x), ".")
     plt.xlabel("In-phase")
     plt.ylabel("Quadrature")
     plt.title(title)
     plt.grid(True)
     plt.axis("equal")
-
-    if show_evm:
-        if ref is None:
-            raise ValueError("EVM requires a reference signal (ref).")
-
-        ref = np.asarray(ref)
-
-        # Align lengths (basic safety; better alignment may be needed in practice)
-        n = min(len(x), len(ref))
-        x = x[:n]
-        ref = ref[:n]
-
-        error = x - ref
-
-        rms_ref = np.sqrt(np.mean(np.abs(ref)**2))
-        rms_err = np.sqrt(np.mean(np.abs(error)**2))
-
-        evm = rms_err / rms_ref
-        evm_db = 20 * np.log10(evm + 1e-12)
-
-        print(f"EVM (RMS): {evm:.6f}")
-        print(f"EVM (dB):  {evm_db:.2f} dB")
-
     plt.show()
 
 

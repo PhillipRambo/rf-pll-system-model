@@ -13,10 +13,9 @@ from .OFDM_plots import (
 )
 
 __all__ = [
-    "plot_top_spectrum", 
-    "plot_constellation", 
-    "plot_bits",
+    "plot_top_spectrum",
     "plot_constellation",
+    "plot_bits",
     "plot_ofdm_frequency_bins",
     "plot_ofdm_frequency_bins_centered",
     "plot_time_signal",

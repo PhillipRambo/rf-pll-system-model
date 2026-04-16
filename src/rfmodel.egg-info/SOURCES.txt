@@ -41,4 +41,4 @@ src/rfmodel/system/__init__.py
 src/rfmodel/system/link_budget.py
 src/rfmodel/system/script_tester.py
 src/rfmodel/test/pipeline_builder.py
-src/rfmodel/test/test_pipline.py
+src/rfmodel/test/test_pipeline.py
