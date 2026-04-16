@@ -25,6 +25,7 @@ src/rfmodel/core/random.py
 src/rfmodel/core/signal.py
 src/rfmodel/core/units.py
 src/rfmodel/meas/__init__.py
+src/rfmodel/meas/phase_noise_analyser.py
 src/rfmodel/meas/spectrum_analyser.py
 src/rfmodel/plot_utils/OFDM_plots.py
 src/rfmodel/plot_utils/Spectrum_plot.py
