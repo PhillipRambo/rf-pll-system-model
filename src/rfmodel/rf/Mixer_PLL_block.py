@@ -24,14 +24,24 @@ class PLL:
         self.SLF = 10**(self.p.SLF_dBc / 10)
 
     def get_psd(self, f: np.ndarray) -> np.ndarray:
-        """Calculates the PSD based on Lorentzian and optional OFDM weighting."""
-        # Lorentzian model
-        S_phi = self.SLF + self.alpha / (f**2 + self.p.f_L**2)
+        f_L = self.p.f_L
+        
+        # Avoid division by zero at f=0
+        f_safe = np.where(f == 0, np.finfo(float).eps, f)
+        
+        lp_factor = 1 / (1 + (f_safe / f_L)**2)   # low-pass: reference noise
+        hp_factor = (f_safe / f_L)**2 / (1 + (f_safe / f_L)**2)  # high-pass: VCO noise
+        
+        S_phi = self.SLF * lp_factor + (self.alpha / f_safe**2) * hp_factor
         
         if self.p.enable_ofdm_weighting:
-            denom = (np.pi * f * self.p.Tu)**2
-            h_bbf = 1 - np.divide((np.sin(np.pi * f * self.p.Tu))**2, denom, 
-                                  out=np.zeros_like(f), where=denom!=0)
+            denom = (np.pi * f_safe * self.p.Tu)**2
+            h_bbf = 1 - np.divide(
+                np.sin(np.pi * f_safe * self.p.Tu)**2,
+                denom,
+                out=np.zeros_like(f_safe),
+                where=denom != 0
+            )
             S_phi *= h_bbf
             
         return S_phi
