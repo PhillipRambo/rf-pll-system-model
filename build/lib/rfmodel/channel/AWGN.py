@@ -63,3 +63,4 @@ class AWGNBlock(Block):
 
         y = x + n
         return s.copy_with(x=y)
+    

@@ -1,9 +1,10 @@
 import matplotlib.pyplot as plt
 
-def plot_pipeline(pipe, mixer_name="mixer_and_pll"):
+def plot_pipeline(pipe):
     """
-    Plots a pipeline where the mixer/PLL block is drawn as a mixer 
-    in series with the signal path, and the PLL as an LO source below it.
+    Plots a pipeline where every mixer block is drawn as a mixer symbol
+    in series with the signal path, and its PLL as an LO source below it.
+    Dispatch is by block type, so mixers can be named freely in the YAML.
     """
     blocks = pipe.blocks
     n = len(blocks)
@@ -20,7 +21,7 @@ def plot_pipeline(pipe, mixer_name="mixer_and_pll"):
         x = i * spacing
         y = 0
         
-        if blk.name == mixer_name:
+        if blk.type_name == "mixer":
             # --- Draw the Mixer (Circle with an 'X') ---
             mixer_center = (x + block_width/2, y)
             circle = plt.Circle(mixer_center, 0.4, facecolor="white", edgecolor="black", zorder=3)
@@ -65,4 +66,4 @@ def plot_pipeline(pipe, mixer_name="mixer_and_pll"):
     plt.show()
 
 # Usage:
-# plot_pipeline_schematic(pipe, mixer_name="mixer_and_pll")
+# plot_pipeline(pipe)

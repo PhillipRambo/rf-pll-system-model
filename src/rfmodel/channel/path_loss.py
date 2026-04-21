@@ -28,7 +28,6 @@ class PathLossBlock(Block):
         super().__init__(name=name)
         self.params = params
         
-        # Pre-calculate wavelength for the warning
         c = 299792458.0
         self.wavelength = c / params.freq_hz
         
@@ -55,7 +54,6 @@ class PathLossBlock(Block):
         # Factor = (lambda / 4 * pi * d)^2
         G_friis = Gt * Gr * (self.wavelength / (4 * np.pi * p.distance_m)) ** 2
         
-        # --- THE CLAMP ---
         # Gain cannot exceed the product of antenna gains (max coupling)
         G = np.minimum(G_friis, Gt * Gr)
 
