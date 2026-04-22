@@ -10,7 +10,7 @@ pipeline:
       pll:
         VCO_PhaseNoise: [-115, 1e6]   # [dBc, f_offset]
         LF_noise_floor: -140
-        loop_bandwidth: 10e3
+        loop_bandwidth: 30e3
 
   - type: pa
     name: PA_TX
@@ -23,7 +23,7 @@ pipeline:
     name: PathLoss
     params:
       freq_hz: 5e9
-      distance_m: 15.0      
+      distance_m: 2.0      
       tx_ant_gain_db: 2.15     
       rx_ant_gain_db: 2.15      
 
@@ -39,7 +39,7 @@ pipeline:
     params:
       gain_db: 20.0         
       nf_db: 1.5            
-      IP3_dbm: -5.0       
+      IP3_dbm: 13.0       
   - type: mixer
     name: mixer_and_pll_RX
     seed: 1
@@ -51,4 +51,4 @@ pipeline:
       pll:
         VCO_PhaseNoise: [-115, 1e6]   # [dBc, f_offset]
         LF_noise_floor: -140
-        loop_bandwidth: 10e3  
+        loop_bandwidth: 30e3  
