@@ -1,0 +1,678 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Examples &#8212; RF PLL System Model</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/examples_intro';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Generating Input signal" href="../test_benches/Devices/LNA/LNA_Verification_Non_linear.html" />
+    <link rel="prev" title="Components" href="components.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">RF PLL System Model</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    RF PLL System Model
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Core Framework</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="core_framework.html">Core Framework</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Components</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="components.html">Components</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_benches/Devices/LNA/LNA_Verification_Non_linear.html">Generating Input signal</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../test_benches/Devices/PA/PA_test.html">Using Rapp Model</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../test_benches/Devices/Mixer_PLL/Mixer_Verification.html">Intermodulation Test</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../test_benches/System/OFDM_QAM/OFDM_QAM_test.html">PRBS signal generation</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../verification/Performance_Verification.html">Input Generation</a></li>
+
+
+
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/PhillipRambo/rf-pll-system-model" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/PhillipRambo/rf-pll-system-model/issues/new?title=Issue%20on%20page%20%2Fdocs/examples_intro.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/docs/examples_intro.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Examples</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#device-verification">Device Verification</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lna-nonlinearity">LNA — Nonlinearity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lna-noise-figure">LNA — Noise Figure</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pa-compression-and-model-comparison">PA — Compression and Model Comparison</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mixer-linearity-and-noise">Mixer — Linearity and Noise</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pll-phase-noise-verification">PLL — Phase Noise Verification</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#system-verification">System Verification</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#channel-modelling">Channel Modelling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ofdm-and-qam">OFDM and QAM</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#payload-generation">Payload Generation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-verification">Performance Verification</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">#</a></h1>
+<p>This chapter collects all verification and test notebooks. Each notebook is self-contained and targets a specific block or system-level behaviour. They are organised into two groups: <strong>device verification</strong> (individual RF components tested in isolation) and <strong>system verification</strong> (end-to-end signal chain tests).</p>
+<p>All notebooks load their pipeline from a YAML configuration file in the same directory, keeping test parameters easy to inspect and modify without touching the notebook cells.</p>
+<hr class="docutils" />
+<section id="device-verification">
+<h2>Device Verification<a class="headerlink" href="#device-verification" title="Permalink to this heading">#</a></h2>
+<section id="lna-nonlinearity">
+<h3>LNA — Nonlinearity<a class="headerlink" href="#lna-nonlinearity" title="Permalink to this heading">#</a></h3>
+<p><strong>Notebook:</strong> <code class="docutils literal notranslate"><span class="pre">test_benches/Devices/LNA/LNA_Verification_Non_linear.ipynb</span></code></p>
+<p>Demonstrates the IIP3 measurement procedure for the LNA using the standard two-tone method. A real two-tone RF signal is constructed and down-converted to the complex baseband. The input power is swept over a wide range using a scale-factor approach, and the spectrum analyser is used to track the fundamental tone power and the third-order intermodulation (IM3) product power at each sweep point.</p>
+<p>The resulting curves (fundamental: slope ~1 dB/dB, IM3: slope ~3 dB/dB) are fitted in the linear regime and extrapolated to their intersection, giving the input-referred IIP3. The measured intercept point is compared against the configured <code class="docutils literal notranslate"><span class="pre">IP3_dbm</span></code> parameter and the error is printed.</p>
+<p><strong>Key checks:</strong></p>
+<ul class="simple">
+<li><p>Fundamental slope ≈ 1 dB/dB</p></li>
+<li><p>IM3 slope ≈ 3 dB/dB</p></li>
+<li><p>Measured IIP3 matches configured value</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="lna-noise-figure">
+<h3>LNA — Noise Figure<a class="headerlink" href="#lna-noise-figure" title="Permalink to this heading">#</a></h3>
+<p><strong>Notebook:</strong> <code class="docutils literal notranslate"><span class="pre">test_benches/Devices/LNA/LNA_Verification_noise.ipynb</span></code></p>
+<p>Verifies the LNA noise model. A thermal noise source at temperature <span class="math notranslate nohighlight">\(T = 290\)</span> K with power <span class="math notranslate nohighlight">\(kTB\)</span> is generated as the input signal. The signal is passed through the LNA and the output noise power is measured. The noise figure is computed as:</p>
+<div class="math notranslate nohighlight">
+\[F = \frac{P_{n,\text{out}}}{G \cdot kTB}\]</div>
+<p>The measured noise figure is compared against the configured <code class="docutils literal notranslate"><span class="pre">nf_db</span></code> parameter. The input and output noise power spectral densities are plotted to verify the flat noise floor and the added noise from the amplifier.</p>
+<p><strong>Key checks:</strong></p>
+<ul class="simple">
+<li><p>Measured NF matches configured <code class="docutils literal notranslate"><span class="pre">nf_db</span></code></p></li>
+<li><p>Output noise PSD is uniformly elevated above input noise floor by the noise factor</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="pa-compression-and-model-comparison">
+<h3>PA — Compression and Model Comparison<a class="headerlink" href="#pa-compression-and-model-comparison" title="Permalink to this heading">#</a></h3>
+<p><strong>Notebook:</strong> <code class="docutils literal notranslate"><span class="pre">test_benches/Devices/PA/PA_test.ipynb</span></code></p>
+<p>Tests the PA block across a range of input powers to characterise the AM-AM compression curve. The notebook includes:</p>
+<ol class="arabic simple">
+<li><p><strong>Small-signal gain check</strong> — verifies the gain at low input power matches <code class="docutils literal notranslate"><span class="pre">gain_db</span></code></p></li>
+<li><p><strong>Compression sweep</strong> — sweeps input power from −30 to +20 dBm, measures output power and gain at each point, and identifies the 1 dB compression point</p></li>
+<li><p><strong>Comparison of Rapp vs cubic model</strong> — runs the same sweep with both models enabled and overlays the results, illustrating the difference in compression shape and the cubic model’s unphysical gain reversal above P1dB</p></li>
+</ol>
+<p>The Rapp model is the recommended default for PA simulation; the cubic model is provided for analytical compatibility.</p>
+<p><strong>Key checks:</strong></p>
+<ul class="simple">
+<li><p>Small-signal gain matches <code class="docutils literal notranslate"><span class="pre">gain_db</span></code></p></li>
+<li><p>Measured output P1dB matches configured <code class="docutils literal notranslate"><span class="pre">p1db_out_dbm</span></code></p></li>
+<li><p>Rapp model saturates gracefully; cubic model diverges well above P1dB</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="mixer-linearity-and-noise">
+<h3>Mixer — Linearity and Noise<a class="headerlink" href="#mixer-linearity-and-noise" title="Permalink to this heading">#</a></h3>
+<p><strong>Notebook:</strong> <code class="docutils literal notranslate"><span class="pre">test_benches/Devices/Mixer_PLL/Mixer_Verification.ipynb</span></code></p>
+<p>A multi-part verification of the mixer block covering three test cases:</p>
+<ol class="arabic simple">
+<li><p><strong>Ideal mixer verification</strong> — disables all impairments (<code class="docutils literal notranslate"><span class="pre">mixer_ideal=True</span></code>) and verifies that signal power is preserved exactly through the mixer. The input and output spectra are overlaid to confirm no distortion.</p></li>
+<li><p><strong>IIP3 two-tone test</strong> — following the same procedure as the LNA nonlinearity test, a two-tone complex envelope input is swept in power and the fundamental/IM3 powers are tracked. Linear fits are extrapolated to find the IIP3 and verify it against the configured <code class="docutils literal notranslate"><span class="pre">iip3_dbm</span></code>.</p></li>
+<li><p><strong>Noise figure test</strong> — uses a thermal noise input to measure the mixer’s added noise and compute the noise figure, following the same method as the LNA noise notebook.</p></li>
+</ol>
+<p><strong>Key checks:</strong></p>
+<ul class="simple">
+<li><p>Ideal mixer: power ratio = 1.0</p></li>
+<li><p>Measured IIP3 matches <code class="docutils literal notranslate"><span class="pre">iip3_dbm</span></code></p></li>
+<li><p>Measured NF matches <code class="docutils literal notranslate"><span class="pre">nf_db</span></code></p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="pll-phase-noise-verification">
+<h3>PLL — Phase Noise Verification<a class="headerlink" href="#pll-phase-noise-verification" title="Permalink to this heading">#</a></h3>
+<p><strong>Notebook:</strong> <code class="docutils literal notranslate"><span class="pre">test_benches/Devices/Mixer_PLL/PLL_Verification.ipynb</span></code></p>
+<p>Verifies the PLL phase noise model by generating an LO signal from the PLL and measuring its phase noise spectrum. The phase noise curve is extracted using the phase noise analyser and compared against the configured model parameters.</p>
+<p>The notebook illustrates the two-region PLL noise shape: the low-frequency region dominated by reference noise (flat response inside the loop bandwidth) and the high-frequency VCO <span class="math notranslate nohighlight">\(1/f^2\)</span> region outside the loop bandwidth. The crossover point at the loop bandwidth <span class="math notranslate nohighlight">\(f_L\)</span> is clearly visible in the measured PSD.</p>
+<p><strong>Key checks:</strong></p>
+<ul class="simple">
+<li><p>Phase noise at the configured offset matches <code class="docutils literal notranslate"><span class="pre">VCO_Phase_Noise_dBc</span></code></p></li>
+<li><p>Loop bandwidth knee visible at <code class="docutils literal notranslate"><span class="pre">f_L</span></code></p></li>
+<li><p>Noise floor at low offsets matches <code class="docutils literal notranslate"><span class="pre">SLF_dBc</span></code></p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="system-verification">
+<h2>System Verification<a class="headerlink" href="#system-verification" title="Permalink to this heading">#</a></h2>
+<section id="channel-modelling">
+<h3>Channel Modelling<a class="headerlink" href="#channel-modelling" title="Permalink to this heading">#</a></h3>
+<p><strong>Notebook:</strong> <code class="docutils literal notranslate"><span class="pre">test_benches/System/Channel/Channel_modelling.ipynb</span></code></p>
+<p>Demonstrates the channel model blocks. Covers free-space path loss computation using the Friis equation and AWGN channel effects on a known signal. Shows how path loss and noise combine in a realistic propagation scenario.</p>
+</section>
+<hr class="docutils" />
+<section id="ofdm-and-qam">
+<h3>OFDM and QAM<a class="headerlink" href="#ofdm-and-qam" title="Permalink to this heading">#</a></h3>
+<p><strong>Notebook:</strong> <code class="docutils literal notranslate"><span class="pre">test_benches/System/OFDM_QAM/OFDM_QAM_test.ipynb</span></code></p>
+<p>End-to-end test of the OFDM/QAM signal processing chain:</p>
+<ul class="simple">
+<li><p>PRBS bit generation</p></li>
+<li><p>QAM modulation and constellation visualisation</p></li>
+<li><p>OFDM modulation: FFT spectrum, cyclic prefix, guard bands</p></li>
+<li><p>OFDM demodulation and QAM demapping</p></li>
+<li><p>BER computation for a given SNR</p></li>
+</ul>
+<p>This notebook establishes the baseline communication chain without RF impairments, verifying that the modulator/demodulator pair is error-free in an ideal (noiseless) scenario.</p>
+</section>
+<hr class="docutils" />
+<section id="payload-generation">
+<h3>Payload Generation<a class="headerlink" href="#payload-generation" title="Permalink to this heading">#</a></h3>
+<p><strong>Notebook:</strong> <code class="docutils literal notranslate"><span class="pre">test_benches/System/Payload_Generation/payload.ipynb</span></code></p>
+<p>Covers the generation of a complete baseband payload: PRBS bits → QAM symbols → OFDM waveform. Shows the signal at each processing stage and characterises the statistical properties (PAPR, power distribution) of the resulting complex baseband waveform before it enters the RF chain.</p>
+</section>
+<hr class="docutils" />
+<section id="performance-verification">
+<h3>Performance Verification<a class="headerlink" href="#performance-verification" title="Permalink to this heading">#</a></h3>
+<p><strong>Notebook:</strong> <code class="docutils literal notranslate"><span class="pre">verification/Performance_Verification.ipynb</span></code></p>
+<p>The top-level end-to-end system verification. The full signal chain — from payload generation through the RF front-end (LNA, Mixer with PLL, PA), through the channel (path loss, AWGN), to demodulation — is simulated and evaluated.</p>
+<p>Key metrics computed:</p>
+<ul class="simple">
+<li><p><strong>EVM (Error Vector Magnitude)</strong> — measures the deviation of received constellation points from their ideal positions, combining all impairments</p></li>
+<li><p><strong>BER (Bit Error Rate)</strong> — measured from end-to-end bit errors after demapping</p></li>
+</ul>
+<p>The notebook is the primary tool for assessing the overall impact of RF impairments on system performance and comparing against specification targets from the project report.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./docs"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="components.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Components</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../test_benches/Devices/LNA/LNA_Verification_Non_linear.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Generating Input signal</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#device-verification">Device Verification</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lna-nonlinearity">LNA — Nonlinearity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lna-noise-figure">LNA — Noise Figure</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pa-compression-and-model-comparison">PA — Compression and Model Comparison</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mixer-linearity-and-noise">Mixer — Linearity and Noise</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pll-phase-noise-verification">PLL — Phase Noise Verification</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#system-verification">System Verification</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#channel-modelling">Channel Modelling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ofdm-and-qam">OFDM and QAM</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#payload-generation">Payload Generation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-verification">Performance Verification</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By PhillipRambo
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

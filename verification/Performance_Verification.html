@@ -1,0 +1,1106 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Performance Verification &#8212; RF PLL System Model</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'verification/Performance_Verification';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="System Performance Verification" href="../docs/examples/performance.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">RF PLL System Model</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    RF PLL System Model
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Core Framework</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../docs/core_framework.html">Core Framework</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Components</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../docs/components.html">Components</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Device Verification</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../docs/examples/lna_nonlinear.html">LNA — Nonlinearity</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../test_benches/Devices/LNA/LNA_Verification_Non_linear.html">LNA Non-Linear Analysis</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../docs/examples/lna_noise.html">LNA — Noise Figure</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../test_benches/Devices/LNA/LNA_Verification_noise.html">LNA Noise Figure Analysis</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../docs/examples/pa_test.html">PA — Compression and Model Comparison</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../test_benches/Devices/PA/PA_test.html">Using Rapp Model</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../docs/examples/mixer_verification.html">Mixer — Linearity and Noise</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../test_benches/Devices/Mixer_PLL/Mixer_Verification.html">Mixer Verification</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../docs/examples/pll_verification.html">PLL — Phase Noise Verification</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../test_benches/Devices/Mixer_PLL/PLL_Verification.html">PLL Verification</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">System Verification</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../docs/examples/channel_modelling.html">Channel Modelling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../test_benches/System/Channel/Channel_modelling.html">Channel Modelling</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../docs/examples/ofdm_qam.html">OFDM and QAM</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../test_benches/System/OFDM_QAM/OFDM_QAM_test.html">OFDM and QAM signal generation</a></li>
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../docs/examples/payload.html">Payload Generation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../test_benches/System/Payload_Generation/payload.html">Payload generation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../docs/examples/performance.html">System Performance Verification</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Performance Verification</a></li>
+
+
+
+
+
+
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/PhillipRambo/rf-pll-system-model" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/PhillipRambo/rf-pll-system-model/issues/new?title=Issue%20on%20page%20%2Fverification/Performance_Verification.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/verification/Performance_Verification.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Performance Verification</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Performance Verification</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#input-generation">Input Generation</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#allocate-symbols-to-qam-and-ofdm">Allocate symbols to QAM and OFDM</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline-initiation">PipeLine Initiation</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-evaluation">Performance Evaluation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#link-budget-simulated-power-per-block">Link budget — simulated power per block</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#evm">EVM</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#ber">BER</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="performance-verification">
+<h1>Performance Verification<a class="headerlink" href="#performance-verification" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Standard library</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="c1"># RFModel core</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rfmodel.core.signal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Signal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rfmodel.core.pipeline_builder</span><span class="w"> </span><span class="kn">import</span> <span class="n">pipeline_from_config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rfmodel.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_yaml</span>
+
+<span class="c1"># Comms</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rfmodel.comms.pseudorandom_NGR</span><span class="w"> </span><span class="kn">import</span> <span class="n">PRBSBitSource</span><span class="p">,</span> <span class="n">PRBSParams</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rfmodel.comms.QAM_modulator</span><span class="w"> </span><span class="kn">import</span> <span class="n">QAMModulator</span><span class="p">,</span> <span class="n">QAMParams</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rfmodel.comms.OFDM_block</span><span class="w"> </span><span class="kn">import</span> <span class="n">OFDMModulator</span><span class="p">,</span> <span class="n">OFDMParams</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rfmodel.plot_utils.plot_block_diagram</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_pipeline</span>
+
+<span class="c1"># Plot utilities</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rfmodel.plot_utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">plot_bits</span><span class="p">,</span>
+    <span class="n">plot_constellation</span><span class="p">,</span>
+    <span class="n">plot_constellation_with_bits</span><span class="p">,</span>
+    <span class="n">plot_ofdm_frequency_bins_centered</span><span class="p">,</span>
+    <span class="n">plot_time_signal</span><span class="p">,</span>
+    <span class="n">plot_spectrum</span><span class="p">,</span>
+    <span class="n">reconstruct_one_ofdm_symbol_freq</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Registries</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">rfmodel.rf.registry</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">rfmodel.channel.registry</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="input-generation">
+<h1>Input Generation<a class="headerlink" href="#input-generation" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --------------------------------------------------</span>
+<span class="c1"># Parameters</span>
+<span class="c1"># --------------------------------------------------</span>
+<span class="n">M</span> <span class="o">=</span> <span class="mi">64</span> <span class="c1">#QAM modulation</span>
+<span class="n">bits_per_symbol</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">M</span><span class="p">))</span> <span class="c1"># 6 Bits for 64-QAM</span>
+
+<span class="n">fs_hz</span> <span class="o">=</span> <span class="mf">20e6</span> <span class="c1"># Channel Bandwidth</span>
+<span class="n">n_fft</span> <span class="o">=</span> <span class="mi">64</span>   <span class="c1"># FFT Size</span>
+<span class="n">cp_len</span> <span class="o">=</span> <span class="mi">16</span>  <span class="c1"># Cyclic Prefix Length</span>
+<span class="n">n_data_subcarriers</span> <span class="o">=</span> <span class="mi">52</span> <span class="c1"># Number of true data subcarriers</span>
+<span class="n">num_ofdm_symbols</span> <span class="o">=</span> <span class="mi">64</span>   <span class="c1"># Number of Symbols</span>
+
+<span class="n">n_qam_symbols_transmitted</span> <span class="o">=</span> <span class="n">num_ofdm_symbols</span> <span class="o">*</span> <span class="n">n_data_subcarriers</span> <span class="c1"># Actual Transmitted QAM Symbols</span>
+
+<span class="c1"># --------------------------------------------------</span>
+<span class="c1"># Generate bits (Pseudo Random)</span>
+<span class="c1"># --------------------------------------------------</span>
+<span class="n">dummy_sig</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">),</span> <span class="n">fs_hz</span><span class="o">=</span><span class="n">fs_hz</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;PRBS15 Input Bits&quot;</span><span class="p">})</span>
+
+<span class="n">prbs_gen</span> <span class="o">=</span> <span class="n">PRBSBitSource</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;tx_bits&quot;</span><span class="p">,</span>
+    <span class="n">params</span><span class="o">=</span><span class="n">PRBSParams</span><span class="p">(</span>
+        <span class="n">order</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+        <span class="n">n_bits</span><span class="o">=</span><span class="n">n_qam_symbols_transmitted</span> <span class="o">*</span> <span class="n">bits_per_symbol</span><span class="p">,</span>
+        <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">sig_bits</span> <span class="o">=</span> <span class="n">prbs_gen</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">dummy_sig</span><span class="p">)</span>
+<span class="n">bits</span> <span class="o">=</span> <span class="n">sig_bits</span><span class="o">.</span><span class="n">x</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of bits:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">bits</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Expected QAM symbols:&quot;</span><span class="p">,</span> <span class="n">n_qam_symbols_transmitted</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Bits per symbol:&quot;</span><span class="p">,</span> <span class="n">bits_per_symbol</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sig_bits</span><span class="o">.</span><span class="n">meta</span><span class="p">)</span>
+<span class="n">plot_bits</span><span class="p">(</span><span class="n">bits</span><span class="p">,</span> <span class="n">n_bits</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Random input bits&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of bits: 19968
+Expected QAM symbols: 3328
+Bits per symbol: 6
+{&#39;name&#39;: &#39;PRBS15 Input Bits&#39;, &#39;source&#39;: &#39;PRBS15&#39;, &#39;prbs_order&#39;: 15, &#39;n_bits&#39;: 19968, &#39;seed&#39;: 123}
+</pre></div>
+</div>
+<img alt="../_images/860d8df149b0fc4d9c1d4222ff7502b8a1935e268e3150d4f5ddd2c7d648534c.png" src="../_images/860d8df149b0fc4d9c1d4222ff7502b8a1935e268e3150d4f5ddd2c7d648534c.png" />
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="allocate-symbols-to-qam-and-ofdm">
+<h1>Allocate symbols to QAM and OFDM<a class="headerlink" href="#allocate-symbols-to-qam-and-ofdm" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --------------------------------------------------</span>
+<span class="c1"># QAM modulation</span>
+<span class="c1"># --------------------------------------------------</span>
+<span class="n">qam</span> <span class="o">=</span> <span class="n">QAMModulator</span><span class="p">(</span>
+    <span class="s2">&quot;qam1&quot;</span><span class="p">,</span>
+    <span class="n">QAMParams</span><span class="p">(</span>
+        <span class="n">M</span><span class="o">=</span><span class="n">M</span><span class="p">,</span>
+        <span class="n">gray_map</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">unit_average_power</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">sig_qam</span> <span class="o">=</span> <span class="n">qam</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">sig_bits</span><span class="p">)</span>
+<span class="n">qam_symbols</span> <span class="o">=</span> <span class="n">sig_qam</span><span class="o">.</span><span class="n">x</span>
+
+<span class="c1"># --------------------------------------------------</span>
+<span class="c1"># OFDM modulation</span>
+<span class="c1"># --------------------------------------------------</span>
+<span class="n">ofdm</span> <span class="o">=</span> <span class="n">OFDMModulator</span><span class="p">(</span>
+    <span class="s2">&quot;ofdm1&quot;</span><span class="p">,</span>
+    <span class="n">OFDMParams</span><span class="p">(</span>
+        <span class="n">n_fft</span><span class="o">=</span><span class="n">n_fft</span><span class="p">,</span>
+        <span class="n">cp_len</span><span class="o">=</span><span class="n">cp_len</span><span class="p">,</span>
+        <span class="n">n_data_subcarriers</span><span class="o">=</span><span class="n">n_data_subcarriers</span><span class="p">,</span>
+        <span class="n">normalize_ifft</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">null_dc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">sig_ofdm</span> <span class="o">=</span> <span class="n">ofdm</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">sig_qam</span><span class="p">)</span>
+<span class="n">tx_input</span> <span class="o">=</span> <span class="n">sig_ofdm</span><span class="o">.</span><span class="n">x</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;OFDM output samples:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tx_input</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Expected samples:&quot;</span><span class="p">,</span> <span class="n">num_ofdm_symbols</span> <span class="o">*</span> <span class="p">(</span><span class="n">n_fft</span> <span class="o">+</span> <span class="n">cp_len</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OFDM output samples: 5120
+Expected samples: 5120
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rfmodel.core.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">dbm_to_w</span>
+
+<span class="c1"># Define your target input power to the LNA/Pipeline</span>
+<span class="n">input_pwr_dbm</span> <span class="o">=</span> <span class="o">-</span><span class="mi">30</span> 
+
+<span class="n">current_w</span>      <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">sig_ofdm</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">target_w</span>       <span class="o">=</span> <span class="n">dbm_to_w</span><span class="p">(</span><span class="n">input_pwr_dbm</span><span class="p">)</span>
+<span class="n">scaling_factor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">target_w</span> <span class="o">/</span> <span class="n">current_w</span><span class="p">)</span>
+
+<span class="n">sig_ofdm_normalized</span> <span class="o">=</span> <span class="n">sig_ofdm</span><span class="o">.</span><span class="n">copy_with</span><span class="p">(</span><span class="n">x</span><span class="o">=</span> <span class="n">sig_ofdm</span><span class="o">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">scaling_factor</span><span class="p">)</span>
+
+<span class="n">actual_pwr_watts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">sig_ofdm_normalized</span><span class="o">.</span><span class="n">x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">actual_pwr_dbm</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">actual_pwr_watts</span><span class="p">)</span> <span class="o">+</span> <span class="mi">30</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Target Power: </span><span class="si">{</span><span class="n">input_pwr_dbm</span><span class="si">}</span><span class="s2"> dBm&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Actual Scaled Power: </span><span class="si">{</span><span class="n">actual_pwr_dbm</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> dBm&quot;</span><span class="p">)</span>
+
+<span class="n">plot_constellation_with_bits</span><span class="p">(</span>                                                                                                                                                                                        
+    <span class="n">symbols</span><span class="o">=</span><span class="n">ofdm</span><span class="o">.</span><span class="n">demodulate</span><span class="p">(</span><span class="n">sig_ofdm_normalized</span><span class="p">)</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+    <span class="n">bits</span><span class="o">=</span><span class="n">bits</span><span class="p">,</span>                                                                                                                                                                                                       
+    <span class="n">bits_per_symbol</span><span class="o">=</span><span class="n">bits_per_symbol</span><span class="p">,</span>                      
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;64-QAM Constellation with Bit Labels&quot;</span><span class="p">,</span>
+    <span class="n">science</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">fig_scale</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Target Power: -30 dBm
+Actual Scaled Power: -30.00 dBm
+</pre></div>
+</div>
+<img alt="../_images/d8f89aefbba22a4bd5fd1fd611fb73c45b6260bf744db1feade860734e34526b.png" src="../_images/d8f89aefbba22a4bd5fd1fd611fb73c45b6260bf744db1feade860734e34526b.png" />
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="pipeline-initiation">
+<h1>PipeLine Initiation<a class="headerlink" href="#pipeline-initiation" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">load_yaml</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;.\Tx_channel_Rx.yaml&quot;</span><span class="p">)</span>
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">pipeline_from_config</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="n">mixer_tx</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mixer_and_pll_TX&quot;</span><span class="p">)</span>
+<span class="n">mixer_tx</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">mixer_ideal</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">mixer_tx</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">pll</span><span class="o">.</span><span class="n">enable_ofdm_weighting</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="n">mixer_rx</span><span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mixer_and_pll_RX&quot;</span><span class="p">)</span>
+<span class="n">mixer_rx</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">mixer_ideal</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">mixer_rx</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">pll</span><span class="o">.</span><span class="n">enable_ofdm_weighting</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="n">plot_pipeline</span><span class="p">(</span><span class="n">pipe</span><span class="p">)</span>
+
+<span class="n">output_sig</span><span class="p">,</span> <span class="n">taps</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">sig_ofdm_normalized</span><span class="p">,</span> <span class="n">taps</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;PA_TX&quot;</span><span class="p">,</span> <span class="s2">&quot;PathLoss&quot;</span><span class="p">,</span> <span class="s2">&quot;AWGN&quot;</span><span class="p">,</span> <span class="s2">&quot;LNA&quot;</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input Peak:    </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">sig_ofdm_normalized</span><span class="o">.</span><span class="n">x</span><span class="p">))</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">block_name</span><span class="p">,</span> <span class="n">signal</span> <span class="ow">in</span> <span class="n">taps</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">peak</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">x</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Peak after </span><span class="si">{</span><span class="n">block_name</span><span class="si">:</span><span class="s2">8</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">peak</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/39ea0159d6f21595ff4a2d48589495a82ef101b4bbdf82b6658032f944d48b46.png" src="../_images/39ea0159d6f21595ff4a2d48589495a82ef101b4bbdf82b6658032f944d48b46.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Input Peak:    0.003194
+Peak after PA_TX   : 0.031747
+Peak after PathLoss: 0.000124
+Peak after AWGN    : 0.000125
+Peak after LNA     : 0.001252
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="performance-evaluation">
+<h1>Performance Evaluation<a class="headerlink" href="#performance-evaluation" title="Permalink to this heading">#</a></h1>
+<section id="link-budget-simulated-power-per-block">
+<h2>Link budget — simulated power per block<a class="headerlink" href="#link-budget-simulated-power-per-block" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">blocks</span>   <span class="o">=</span> <span class="p">{</span><span class="n">b</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]:</span> <span class="n">b</span><span class="p">[</span><span class="s2">&quot;params&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">cfg</span><span class="p">[</span><span class="s2">&quot;pipeline&quot;</span><span class="p">]}</span>                                                                                                                                                                     
+<span class="n">c0</span>       <span class="o">=</span> <span class="mf">299792458.0</span>                                                                                                                                                                                                           
+
+<span class="c1"># Gains/losses in dB</span>
+<span class="n">G_mix_tx</span> <span class="o">=</span> <span class="n">blocks</span><span class="p">[</span><span class="s2">&quot;mixer_and_pll_TX&quot;</span><span class="p">][</span><span class="s2">&quot;gain_db&quot;</span><span class="p">]</span>
+<span class="n">G_pa</span>     <span class="o">=</span> <span class="n">blocks</span><span class="p">[</span><span class="s2">&quot;PA_TX&quot;</span><span class="p">][</span><span class="s2">&quot;gain_db&quot;</span><span class="p">]</span>
+<span class="n">G_lna</span>    <span class="o">=</span> <span class="n">blocks</span><span class="p">[</span><span class="s2">&quot;LNA&quot;</span><span class="p">][</span><span class="s2">&quot;gain_db&quot;</span><span class="p">]</span>
+<span class="n">G_mix_rx</span> <span class="o">=</span> <span class="n">blocks</span><span class="p">[</span><span class="s2">&quot;mixer_and_pll_RX&quot;</span><span class="p">][</span><span class="s2">&quot;gain_db&quot;</span><span class="p">]</span>
+
+<span class="c1"># Path loss (Friis) in dB</span>
+<span class="n">p</span>        <span class="o">=</span> <span class="n">blocks</span><span class="p">[</span><span class="s2">&quot;PathLoss&quot;</span><span class="p">]</span>
+<span class="n">lam</span>      <span class="o">=</span> <span class="n">c0</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="s2">&quot;freq_hz&quot;</span><span class="p">])</span>
+<span class="n">L_path</span>   <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">((</span><span class="n">lam</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">p</span><span class="p">[</span><span class="s2">&quot;distance_m&quot;</span><span class="p">]))</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">p</span><span class="p">[</span><span class="s2">&quot;tx_ant_gain_db&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">p</span><span class="p">[</span><span class="s2">&quot;rx_ant_gain_db&quot;</span><span class="p">]</span> 
+
+<span class="c1"># Stage-by-stage addition</span>
+<span class="n">P_in</span>    <span class="o">=</span> <span class="n">input_pwr_dbm</span>
+<span class="n">P_mix1</span>  <span class="o">=</span> <span class="n">P_in</span>   <span class="o">+</span> <span class="n">G_mix_tx</span>
+<span class="n">P_pa</span>    <span class="o">=</span> <span class="n">P_mix1</span> <span class="o">+</span> <span class="n">G_pa</span>
+<span class="n">P_path</span>  <span class="o">=</span> <span class="n">P_pa</span>   <span class="o">+</span> <span class="n">L_path</span>
+<span class="n">P_awgn</span>  <span class="o">=</span> <span class="n">P_path</span> <span class="o">+</span> <span class="mf">0.0</span>
+<span class="n">P_end</span>   <span class="o">=</span> <span class="n">P_awgn</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;P_in      =&quot;</span><span class="p">,</span> <span class="n">P_in</span><span class="p">,</span>   <span class="s2">&quot;dBm&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mixer TX  =&quot;</span><span class="p">,</span> <span class="n">P_mix1</span><span class="p">,</span> <span class="s2">&quot;dBm&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PA_TX     =&quot;</span><span class="p">,</span> <span class="n">P_pa</span><span class="p">,</span>   <span class="s2">&quot;dBm&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PathLoss  =&quot;</span><span class="p">,</span> <span class="n">P_path</span><span class="p">,</span> <span class="s2">&quot;dBm&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Prx  =&quot;</span><span class="p">,</span> <span class="n">P_end</span><span class="p">,</span>  <span class="s2">&quot;dBm&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>P_in      = -30 dBm
+Mixer TX  = -30 dBm
+PA_TX     = -10.0 dBm
+PathLoss  = -58.14778322188338 dBm
+Prx  = -58.14778322188338 dBm
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>                                                                                                                                                        
+<span class="k">def</span><span class="w"> </span><span class="nf">p_dbm</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>        
+    <span class="k">return</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="mi">30</span>                                                                                                                                                                           
+                                                                                                                                                                                                                                
+<span class="n">tap_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;mixer_and_pll_TX&quot;</span><span class="p">,</span> <span class="s2">&quot;PA_TX&quot;</span><span class="p">,</span> <span class="s2">&quot;PathLoss&quot;</span><span class="p">,</span> <span class="s2">&quot;AWGN&quot;</span><span class="p">,</span> <span class="s2">&quot;LNA&quot;</span><span class="p">,</span> <span class="s2">&quot;mixer_and_pll_RX&quot;</span><span class="p">]</span>      
+<span class="nb">print</span><span class="p">(</span><span class="n">p_dbm</span><span class="p">(</span><span class="n">sig_ofdm_normalized</span><span class="o">.</span><span class="n">x</span><span class="p">))</span>                                                                                                                                   
+<span class="n">_</span><span class="p">,</span> <span class="n">taps</span>   <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">sig_ofdm_normalized</span><span class="p">,</span> <span class="n">taps</span><span class="o">=</span><span class="n">tap_names</span><span class="p">)</span>                                                                                                                                                                        
+                                                                                                                                                                                                                                
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;P_in      =&quot;</span><span class="p">,</span> <span class="n">p_dbm</span><span class="p">(</span><span class="n">sig_ofdm_normalized</span><span class="o">.</span><span class="n">x</span><span class="p">),</span>     <span class="s2">&quot;dBm&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mixer TX  =&quot;</span><span class="p">,</span> <span class="n">p_dbm</span><span class="p">(</span><span class="n">taps</span><span class="p">[</span><span class="s2">&quot;mixer_and_pll_TX&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">),</span> <span class="s2">&quot;dBm&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PA_TX     =&quot;</span><span class="p">,</span> <span class="n">p_dbm</span><span class="p">(</span><span class="n">taps</span><span class="p">[</span><span class="s2">&quot;PA_TX&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">),</span>            <span class="s2">&quot;dBm&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PathLoss  =&quot;</span><span class="p">,</span> <span class="n">p_dbm</span><span class="p">(</span><span class="n">taps</span><span class="p">[</span><span class="s2">&quot;PathLoss&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">),</span>         <span class="s2">&quot;dBm&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;AWGN      =&quot;</span><span class="p">,</span> <span class="n">p_dbm</span><span class="p">(</span><span class="n">taps</span><span class="p">[</span><span class="s2">&quot;AWGN&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">),</span>             <span class="s2">&quot;dBm&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;P_rx      =&quot;</span><span class="p">,</span> <span class="n">p_dbm</span><span class="p">(</span><span class="n">taps</span><span class="p">[</span><span class="s2">&quot;AWGN&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">),</span>             <span class="s2">&quot;dBm&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-30.0
+P_in      = -30.0 dBm
+Mixer TX  = -30.00001929458142 dBm
+PA_TX     = -10.003462222633487 dBm
+PathLoss  = -58.15124544451686 dBm
+AWGN      = -58.1465150491488 dBm
+P_rx      = -58.1465150491488 dBm
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Summary: analytical vs simulated link budget -----------------------                                                                                                                                                       </span>
+<span class="n">rows</span> <span class="o">=</span> <span class="p">[</span>                               
+    <span class="p">(</span><span class="s2">&quot;P_in&quot;</span><span class="p">,</span>     <span class="n">P_in</span><span class="p">,</span>   <span class="n">p_dbm</span><span class="p">(</span><span class="n">sig_ofdm_normalized</span><span class="o">.</span><span class="n">x</span><span class="p">)),</span>                                                                                                                                                                          
+    <span class="p">(</span><span class="s2">&quot;Mixer TX&quot;</span><span class="p">,</span> <span class="n">P_mix1</span><span class="p">,</span> <span class="n">p_dbm</span><span class="p">(</span><span class="n">taps</span><span class="p">[</span><span class="s2">&quot;mixer_and_pll_TX&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">)),</span>                                                                                                                                                                     
+    <span class="p">(</span><span class="s2">&quot;PA_TX&quot;</span><span class="p">,</span>    <span class="n">P_pa</span><span class="p">,</span>   <span class="n">p_dbm</span><span class="p">(</span><span class="n">taps</span><span class="p">[</span><span class="s2">&quot;PA_TX&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">)),</span>                                                                                                                                                                                
+    <span class="p">(</span><span class="s2">&quot;PathLoss&quot;</span><span class="p">,</span> <span class="n">P_path</span><span class="p">,</span> <span class="n">p_dbm</span><span class="p">(</span><span class="n">taps</span><span class="p">[</span><span class="s2">&quot;PathLoss&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">)),</span>                                                                                                                                                                             
+    <span class="p">(</span><span class="s2">&quot;AWGN&quot;</span><span class="p">,</span>     <span class="n">P_path</span><span class="p">,</span> <span class="n">p_dbm</span><span class="p">(</span><span class="n">taps</span><span class="p">[</span><span class="s2">&quot;AWGN&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">)),</span>                                                                                                                                                                                 
+    <span class="p">(</span><span class="s2">&quot;P_rx&quot;</span><span class="p">,</span>     <span class="n">P_end</span><span class="p">,</span>  <span class="n">p_dbm</span><span class="p">(</span><span class="n">taps</span><span class="p">[</span><span class="s2">&quot;AWGN&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">)),</span>                                                                                                                                                                                 
+<span class="p">]</span>     
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Stage      P_an [dBm]   P_sim [dBm]   Δ [dB]&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">an</span><span class="p">,</span> <span class="n">sim</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">&lt;10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">an</span><span class="si">:</span><span class="s2">&gt;10.2f</span><span class="si">}</span><span class="s2">   </span><span class="si">{</span><span class="n">sim</span><span class="si">:</span><span class="s2">&gt;10.2f</span><span class="si">}</span><span class="s2">   </span><span class="si">{</span><span class="n">sim</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">an</span><span class="si">:</span><span class="s2">&gt;+7.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Stage      P_an [dBm]   P_sim [dBm]   Δ [dB]
+P_in           -30.00       -30.00     +0.00
+Mixer TX       -30.00       -30.00     -0.00
+PA_TX          -10.00       -10.00     -0.00
+PathLoss       -58.15       -58.15     -0.00
+AWGN           -58.15       -58.15     +0.00
+P_rx           -58.15       -58.15     +0.00
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">scienceplots</span>  <span class="c1"># noqa: F401                                                                                                                                                                                                </span>
+                                                                                                                                                                                                                                
+<span class="n">p_in_sweep_dbm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">50.0</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
+
+<span class="n">G_tot_db</span>  <span class="o">=</span> <span class="n">P_end</span> <span class="o">-</span> <span class="n">P_in</span>                           <span class="c1"># analytical, up to P_rx (AWGN tap)</span>
+<span class="n">current_w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">sig_ofdm</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">p_rx_sim</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">p_rx_an</span>  <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">pin</span> <span class="ow">in</span> <span class="n">p_in_sweep_dbm</span><span class="p">:</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">dbm_to_w</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span> <span class="o">/</span> <span class="n">current_w</span><span class="p">)</span>
+    <span class="n">s_in</span>  <span class="o">=</span> <span class="n">sig_ofdm</span><span class="o">.</span><span class="n">copy_with</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">sig_ofdm</span><span class="o">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">taps_sw</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">s_in</span><span class="p">,</span> <span class="n">taps</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;AWGN&quot;</span><span class="p">])</span>     <span class="c1"># stop at the receive antenna</span>
+    <span class="n">p_rx_sim</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">taps_sw</span><span class="p">[</span><span class="s2">&quot;AWGN&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="mi">30</span><span class="p">)</span>
+    <span class="n">p_rx_an</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pin</span> <span class="o">+</span> <span class="n">G_tot_db</span><span class="p">)</span>
+
+<span class="n">p_rx_sim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">p_rx_sim</span><span class="p">)</span>
+<span class="n">p_rx_an</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">p_rx_an</span><span class="p">)</span>
+<span class="n">delta</span>    <span class="o">=</span> <span class="n">p_rx_sim</span> <span class="o">-</span> <span class="n">p_rx_an</span>
+
+<span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">([</span><span class="s1">&#39;science&#39;</span><span class="p">,</span> <span class="s1">&#39;ieee&#39;</span><span class="p">]):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span> <span class="mf">2.6</span><span class="p">))</span>
+
+    <span class="n">l1</span><span class="p">,</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p_in_sweep_dbm</span><span class="p">,</span> <span class="n">p_rx_an</span><span class="p">,</span>  <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
+                    <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$P_\mathrm</span><span class="si">{an}</span><span class="s1">$&#39;</span><span class="p">)</span>
+    <span class="n">l2</span><span class="p">,</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p_in_sweep_dbm</span><span class="p">,</span> <span class="n">p_rx_sim</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span>
+                    <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">markerfacecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span>
+                    <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$P_\mathrm</span><span class="si">{sim}</span><span class="s1">$&#39;</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$P_\mathrm</span><span class="si">{in}</span><span class="s1">$ [dBm]&#39;</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$P_\mathrm</span><span class="si">{rx}</span><span class="s1">$ [dBm]&#39;</span><span class="p">)</span>
+
+    <span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="p">[</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">],</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower right&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Link Budget Sweep (P1dB @ </span><span class="si">{</span><span class="n">blocks</span><span class="p">[</span><span class="s1">&#39;PA_TX&#39;</span><span class="p">][</span><span class="s1">&#39;p1db_out_dbm&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> dBm)&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/ee45ba7c8c57c1c3e65e5dab8fb9b7a5a6a9f3c351718e415e17a59a6dbf1c5d.png" src="../_images/ee45ba7c8c57c1c3e65e5dab8fb9b7a5a6a9f3c351718e415e17a59a6dbf1c5d.png" />
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="evm">
+<h1>EVM<a class="headerlink" href="#evm" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">output_sig</span><span class="p">,</span> <span class="n">taps</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">sig_ofdm_normalized</span><span class="p">,</span> <span class="n">taps</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;PA_TX&quot;</span><span class="p">,</span> <span class="s2">&quot;PathLoss&quot;</span><span class="p">,</span> <span class="s2">&quot;AWGN&quot;</span><span class="p">,</span> <span class="s2">&quot;LNA&quot;</span><span class="p">])</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">taps</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">sig_ofdm_normalized</span><span class="p">,</span> <span class="n">taps</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;PA_TX&quot;</span><span class="p">])</span>
+<span class="n">sig_demod</span> <span class="o">=</span> <span class="n">ofdm</span><span class="o">.</span><span class="n">demodulate</span><span class="p">(</span><span class="n">taps</span><span class="p">[</span><span class="s2">&quot;PA_TX&quot;</span><span class="p">])</span>
+
+<span class="n">plot_constellation</span><span class="p">(</span>
+    <span class="n">sig_demod</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;64-QAM After RF Pipeline&quot;</span><span class="p">,</span>
+    <span class="n">science</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">fig_scale</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">sig_pa</span> <span class="o">=</span> <span class="n">taps</span><span class="p">[</span><span class="s2">&quot;PA_TX&quot;</span><span class="p">]</span>                                                                                                                                                                                                                                                                                                                                                                                                                      
+<span class="n">sig_pa_demod</span> <span class="o">=</span> <span class="n">ofdm</span><span class="o">.</span><span class="n">demodulate</span><span class="p">(</span><span class="n">sig_pa</span><span class="p">)</span>                                                                                                                                                                                                                                                                                                                                                                                                      
+                                                                                                                                                                                                                                                                                                                                                                                                                                            
+<span class="n">rx</span> <span class="o">=</span> <span class="n">sig_pa_demod</span><span class="o">.</span><span class="n">x</span>                                                                                                                                                                                                                                                                                                                                                                                                                         
+<span class="n">tx</span> <span class="o">=</span> <span class="n">qam_symbols</span>                                                                                                                                                                                                                                                                                                                                                                                                                            
+                                                                                                                                                                                                                                                                                                                                                                                                                                            
+<span class="c1"># Normalize rx to same power as ideal reference</span>
+<span class="n">rx_norm</span> <span class="o">=</span> <span class="n">rx</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tx</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">rx</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+
+
+<span class="n">error</span> <span class="o">=</span> <span class="n">rx_norm</span> <span class="o">-</span> <span class="n">tx</span>
+<span class="n">evm_rms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tx</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;TX EVM (RMS): </span><span class="si">{</span><span class="n">evm_rms</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> %&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;TX EVM (RMS): </span><span class="si">{</span><span class="mi">20</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">evm_rms</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> dB&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/4161277b932fc4899be0ca0358a3404adabbcce41ad6ddb141ae243e7957f4c5.png" src="../_images/4161277b932fc4899be0ca0358a3404adabbcce41ad6ddb141ae243e7957f4c5.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TX EVM (RMS): 1.17 %
+TX EVM (RMS): -38.66 dB
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sig_out</span><span class="p">,</span> <span class="n">taps</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">sig_ofdm_normalized</span><span class="p">)</span>
+<span class="n">sig_demod</span> <span class="o">=</span> <span class="n">ofdm</span><span class="o">.</span><span class="n">demodulate</span><span class="p">(</span><span class="n">sig_out</span><span class="p">)</span>
+
+<span class="n">plot_constellation</span><span class="p">(</span>
+    <span class="n">sig_demod</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;64-QAM After RF Pipeline&quot;</span><span class="p">,</span>
+    <span class="n">science</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">fig_scale</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">rx</span> <span class="o">=</span> <span class="n">sig_demod</span><span class="o">.</span><span class="n">x</span>                                                                                                                                                                                                                                                                                                                                                                                                                         
+<span class="n">tx</span> <span class="o">=</span> <span class="n">qam_symbols</span>                                                                                                                                                                                                                                                                                                                                                                                                                            
+
+<span class="n">rx_norm</span> <span class="o">=</span> <span class="n">rx</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tx</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">rx</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="n">error</span> <span class="o">=</span> <span class="n">rx_norm</span> <span class="o">-</span> <span class="n">tx</span>
+<span class="n">evm_rms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tx</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;TX EVM (RMS): </span><span class="si">{</span><span class="n">evm_rms</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> %&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;TX EVM (RMS): </span><span class="si">{</span><span class="mi">20</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">evm_rms</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> dB&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/47f451674a86e32713135f8e3c41b8bee45d5e456bc8217eaf3cbbed8c5447ba.png" src="../_images/47f451674a86e32713135f8e3c41b8bee45d5e456bc8217eaf3cbbed8c5447ba.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TX EVM (RMS): 5.71 %
+TX EVM (RMS): -24.86 dB
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="ber">
+<h1>BER<a class="headerlink" href="#ber" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="kn">import</span> <span class="n">erfc</span>
+
+<span class="n">sig_ber_out</span><span class="p">,</span> <span class="n">ber_taps</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">sig_ofdm_normalized</span><span class="p">,</span> <span class="n">taps</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;PathLoss&quot;</span><span class="p">,</span> <span class="s2">&quot;AWGN&quot;</span><span class="p">])</span>
+
+<span class="n">rx_syms</span> <span class="o">=</span> <span class="n">ofdm</span><span class="o">.</span><span class="n">demodulate</span><span class="p">(</span><span class="n">sig_ber_out</span><span class="p">)</span><span class="o">.</span><span class="n">x</span>
+
+<span class="n">rx_syms_norm</span> <span class="o">=</span> <span class="n">rx_syms</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">rx_syms</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+
+<span class="c1"># --- Count bit errors ------------------------------------------------------</span>
+<span class="n">Bits_rx</span> <span class="o">=</span> <span class="n">qam</span><span class="o">.</span><span class="n">demap</span><span class="p">(</span><span class="n">rx_syms_norm</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Bits_rx</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sig_bits</span><span class="o">.</span><span class="n">x</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR: length mismatch — cannot compute BER&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">errors</span>      <span class="o">=</span> <span class="n">sig_bits</span><span class="o">.</span><span class="n">x</span> <span class="o">^</span> <span class="n">Bits_rx</span>
+    <span class="n">error_count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">errors</span><span class="p">))</span>
+    <span class="n">ber_sim</span>     <span class="o">=</span> <span class="n">error_count</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">sig_bits</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="c1"># --- SNR at receiver (PathLoss tap = signal only, AWGN tap = signal+noise)</span>
+    <span class="n">noise</span>   <span class="o">=</span> <span class="n">ber_taps</span><span class="p">[</span><span class="s2">&quot;AWGN&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">ber_taps</span><span class="p">[</span><span class="s2">&quot;PathLoss&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">x</span>
+    <span class="n">sig_pwr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ber_taps</span><span class="p">[</span><span class="s2">&quot;PathLoss&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">nse_pwr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">noise</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">snr_lin</span>  <span class="o">=</span> <span class="n">sig_pwr</span> <span class="o">/</span> <span class="n">nse_pwr</span>
+    <span class="n">snr_db</span>   <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">snr_lin</span><span class="p">)</span>
+    <span class="n">ebn0_lin</span> <span class="o">=</span> <span class="n">snr_lin</span> <span class="o">/</span> <span class="n">bits_per_symbol</span>        <span class="c1"># Eb/N0 = Es/N0 / log2(M)</span>
+    <span class="n">ebn0_db</span>  <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">ebn0_lin</span><span class="p">)</span>
+
+
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Errors:       </span><span class="si">{</span><span class="n">error_count</span><span class="si">}</span><span class="s2"> / </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">sig_bits</span><span class="o">.</span><span class="n">x</span><span class="p">)</span><span class="si">}</span><span class="s2"> bits&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BER (sim):    </span><span class="si">{</span><span class="n">ber_sim</span><span class="si">:</span><span class="s2">.4e</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="n">ber_sim</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> %)&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SNR (rx):     </span><span class="si">{</span><span class="n">snr_db</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> dB&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Eb/N0:        </span><span class="si">{</span><span class="n">ebn0_db</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> dB&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Errors:       3 / 19968 bits
+BER (sim):    1.5024e-04  (0.015 %)
+SNR (rx):     24.90 dB
+Eb/N0:        17.11 dB
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">scienceplots</span>  <span class="c1"># noqa: F401</span>
+
+<span class="n">awgn_block</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AWGN&quot;</span><span class="p">)</span>
+<span class="n">snr_saved</span>  <span class="o">=</span> <span class="n">awgn_block</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">snr_db</span>
+
+<span class="n">snr_sweep_db</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">ebn0_sweep_db</span> <span class="o">=</span> <span class="n">snr_sweep_db</span> <span class="o">-</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">bits_per_symbol</span><span class="p">)</span>
+
+<span class="n">ebn0_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">ber_list</span>  <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">snr_db</span><span class="p">,</span> <span class="n">ebn0_db</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">snr_sweep_db</span><span class="p">,</span> <span class="n">ebn0_sweep_db</span><span class="p">):</span>
+    <span class="n">awgn_block</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">snr_db</span> <span class="o">=</span> <span class="n">snr_db</span>
+    <span class="n">sig_out</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">sig_ofdm_normalized</span><span class="p">)</span>
+
+    <span class="n">rx_norm</span> <span class="o">=</span> <span class="n">ofdm</span><span class="o">.</span><span class="n">demodulate</span><span class="p">(</span><span class="n">sig_out</span><span class="p">)</span><span class="o">.</span><span class="n">x</span>
+    <span class="n">rx_norm</span> <span class="o">=</span> <span class="n">rx_norm</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">rx_norm</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">n_err</span>   <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">sig_bits</span><span class="o">.</span><span class="n">x</span> <span class="o">^</span> <span class="n">qam</span><span class="o">.</span><span class="n">demap</span><span class="p">(</span><span class="n">rx_norm</span><span class="p">)))</span>
+
+    <span class="k">if</span> <span class="n">n_err</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">ebn0_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ebn0_db</span><span class="p">)</span>
+        <span class="n">ber_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n_err</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">sig_bits</span><span class="o">.</span><span class="n">x</span><span class="p">))</span>
+
+<span class="n">awgn_block</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">snr_db</span> <span class="o">=</span> <span class="n">snr_saved</span>
+
+<span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">([</span><span class="s1">&#39;science&#39;</span><span class="p">,</span> <span class="s1">&#39;ieee&#39;</span><span class="p">]):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span> <span class="mf">2.8</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">ebn0_list</span><span class="p">,</span> <span class="n">ber_list</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$E_b/N_0$ [dB]&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;BER&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="n">ber_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;BER vs $E_b/N_0$ — 64-QAM Full Chain&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/213e3d3b9bcf7f23658ee347417685a29e1c8c8d0c784c3b749843c33ebb8869.png" src="../_images/213e3d3b9bcf7f23658ee347417685a29e1c8c8d0c784c3b749843c33ebb8869.png" />
+</div>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./verification"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../docs/examples/performance.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">System Performance Verification</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Performance Verification</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#input-generation">Input Generation</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#allocate-symbols-to-qam-and-ofdm">Allocate symbols to QAM and OFDM</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline-initiation">PipeLine Initiation</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-evaluation">Performance Evaluation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#link-budget-simulated-power-per-block">Link budget — simulated power per block</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#evm">EVM</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#ber">BER</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By PhillipRambo
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

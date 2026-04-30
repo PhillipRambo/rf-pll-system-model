@@ -1,0 +1,1130 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Components &#8212; RF PLL System Model</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/components';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Examples" href="examples_intro.html" />
+    <link rel="prev" title="Core Framework" href="core_framework.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">RF PLL System Model</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    RF PLL System Model
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Core Framework</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="core_framework.html">Core Framework</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Components</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Components</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="examples_intro.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_benches/Devices/LNA/LNA_Verification_Non_linear.html">Generating Input signal</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../test_benches/Devices/PA/PA_test.html">Using Rapp Model</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../test_benches/Devices/Mixer_PLL/Mixer_Verification.html">Intermodulation Test</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../test_benches/System/OFDM_QAM/OFDM_QAM_test.html">PRBS signal generation</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../verification/Performance_Verification.html">Input Generation</a></li>
+
+
+
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/PhillipRambo/rf-pll-system-model" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/PhillipRambo/rf-pll-system-model/issues/new?title=Issue%20on%20page%20%2Fdocs/components.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/docs/components.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Components</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rf-devices">RF Devices</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lna-low-noise-amplifier">LNA — Low Noise Amplifier</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pa-power-amplifier">PA — Power Amplifier</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mixer-and-pll">Mixer and PLL</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mixer">Mixer</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pll-phase-noise-model">PLL Phase Noise Model</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#channel-models">Channel Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#awgn-channel">AWGN Channel</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#path-loss">Path Loss</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#communications-blocks">Communications Blocks</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prbs-bit-source">PRBS Bit Source</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qam-modulator">QAM Modulator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ofdm-modulator">OFDM Modulator</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#measurement-and-analysis">Measurement and Analysis</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spectrum-analyser">Spectrum Analyser</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#phase-noise-analyser">Phase Noise Analyser</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-utilities">Plotting Utilities</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spectrum-plot">Spectrum plot</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ofdm-and-constellation-plots">OFDM and constellation plots</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline-diagram">Pipeline diagram</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="components">
+<h1>Components<a class="headerlink" href="#components" title="Permalink to this heading">#</a></h1>
+<p>This chapter describes all implemented signal processing blocks. Every block follows the same interface (see <a class="reference internal" href="core_framework.html"><span class="doc">Core Framework</span></a>) and operates on complex baseband signals where <span class="math notranslate nohighlight">\(|x|^2\)</span> is instantaneous power in watts.</p>
+<p>For theoretical derivations behind the models, refer to the project report in the repository root.</p>
+<hr class="docutils" />
+<section id="rf-devices">
+<h2>RF Devices<a class="headerlink" href="#rf-devices" title="Permalink to this heading">#</a></h2>
+<section id="lna-low-noise-amplifier">
+<h3>LNA — Low Noise Amplifier<a class="headerlink" href="#lna-low-noise-amplifier" title="Permalink to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">rfmodel.rf.LNA</span></code> — <code class="docutils literal notranslate"><span class="pre">LNABlock</span></code>, <code class="docutils literal notranslate"><span class="pre">LNAParams</span></code></p>
+<p>The LNA model captures the two dominant impairments of a physical low-noise amplifier: <strong>gain with thermal noise</strong> and <strong>memoryless third-order nonlinearity</strong>.</p>
+<p><strong>Parameters</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">gain_db</span></code></p></td>
+<td><p>Small-signal power gain in dB</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nf_db</span></code></p></td>
+<td><p>Noise figure in dB</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">IP3_dbm</span></code></p></td>
+<td><p>Input-referred third-order intercept point (IIP3) in dBm</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">temp_k</span></code></p></td>
+<td><p>Physical temperature in Kelvin (default: 290 K)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>What the model does</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Linear gain</strong> — scales the signal amplitude by <span class="math notranslate nohighlight">\(\alpha = \sqrt{G}\)</span></p></li>
+<li><p><strong>Cubic nonlinearity</strong> — applies <span class="math notranslate nohighlight">\(y = \alpha x - \beta |x|^2 x\)</span> where <span class="math notranslate nohighlight">\(\beta\)</span> is derived from IIP3. This models gain compression and generates intermodulation distortion (IM3) products from multi-tone inputs.</p></li>
+<li><p><strong>Output noise</strong> — adds complex Gaussian noise with power <span class="math notranslate nohighlight">\((F-1) \cdot kTG \cdot B\)</span> where <span class="math notranslate nohighlight">\(F\)</span> is the noise factor, <span class="math notranslate nohighlight">\(B = f_s/2\)</span> is the noise bandwidth, and <span class="math notranslate nohighlight">\(G\)</span> is the linear power gain.</p></li>
+</ol>
+<p><strong>What can be demonstrated</strong></p>
+<ul class="simple">
+<li><p>Gain verification (small-signal)</p></li>
+<li><p>IIP3 extraction via two-tone sweep (1:1 fundamental slope, 3:1 IM3 slope)</p></li>
+<li><p>Noise figure measurement from output noise floor</p></li>
+<li><p>Cascaded noise figure in multi-block pipelines</p></li>
+</ul>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rfmodel.rf.LNA</span><span class="w"> </span><span class="kn">import</span> <span class="n">LNABlock</span><span class="p">,</span> <span class="n">LNAParams</span>
+
+<span class="n">lna</span> <span class="o">=</span> <span class="n">LNABlock</span><span class="p">(</span><span class="s2">&quot;lna1&quot;</span><span class="p">,</span> <span class="n">LNAParams</span><span class="p">(</span><span class="n">gain_db</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">nf_db</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">IP3_dbm</span><span class="o">=</span><span class="mf">10.0</span><span class="p">),</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sig_out</span> <span class="o">=</span> <span class="n">lna</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">sig_in</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="pa-power-amplifier">
+<h3>PA — Power Amplifier<a class="headerlink" href="#pa-power-amplifier" title="Permalink to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">rfmodel.rf.PA</span></code> — <code class="docutils literal notranslate"><span class="pre">PABlock</span></code>, <code class="docutils literal notranslate"><span class="pre">PAParams</span></code></p>
+<p>The PA model offers two selectable AM-AM compression laws suited to different use cases.</p>
+<p><strong>Parameters</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">gain_db</span></code></p></td>
+<td><p>Small-signal power gain in dB</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">p1db_out_dbm</span></code></p></td>
+<td><p>Output 1 dB compression point in dBm</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">smoothness_p</span></code></p></td>
+<td><p>Rapp model knee sharpness (default: 2.0, larger = sharper)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">enable_cubic</span></code></p></td>
+<td><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, use cubic model instead of Rapp (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Rapp model (default)</strong></p>
+<p>The Rapp soft compression model provides a smooth, physically realistic AM-AM characteristic that saturates gracefully above P1dB:</p>
+<div class="math notranslate nohighlight">
+\[r_\text{out} = \frac{g \cdot r}{\left(1 + (g \cdot r / A_\text{sat})^{2p}\right)^{1/(2p)}}\]</div>
+<p>The saturation parameter <span class="math notranslate nohighlight">\(A_\text{sat}\)</span> is solved automatically to place the 1 dB compression point exactly at the specified <code class="docutils literal notranslate"><span class="pre">p1db_out_dbm</span></code>. The <code class="docutils literal notranslate"><span class="pre">smoothness_p</span></code> parameter controls the transition sharpness — higher values produce a sharper knee, closer to an ideal hard limiter.</p>
+<p><strong>Cubic model</strong></p>
+<p>The cubic model <span class="math notranslate nohighlight">\(y = \alpha x - \beta |x|^2 x\)</span> provides an analytic approximation valid near and slightly below P1dB. The coefficient <span class="math notranslate nohighlight">\(\beta\)</span> is derived from the P1dB specification. This model goes unphysical (output reversal) well above P1dB and is primarily useful for analytical work and low-order distortion studies.</p>
+<p><strong>What can be demonstrated</strong></p>
+<ul class="simple">
+<li><p>Gain compression sweep and P1dB extraction</p></li>
+<li><p>Comparison between Rapp and cubic AM-AM characteristics</p></li>
+<li><p>Impact of PA nonlinearity on EVM and spectral regrowth</p></li>
+</ul>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rfmodel.rf.PA</span><span class="w"> </span><span class="kn">import</span> <span class="n">PABlock</span><span class="p">,</span> <span class="n">PAParams</span>
+
+<span class="c1"># Rapp model</span>
+<span class="n">pa</span> <span class="o">=</span> <span class="n">PABlock</span><span class="p">(</span><span class="s2">&quot;pa1&quot;</span><span class="p">,</span> <span class="n">PAParams</span><span class="p">(</span><span class="n">gain_db</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">p1db_out_dbm</span><span class="o">=</span><span class="mi">27</span><span class="p">,</span> <span class="n">smoothness_p</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span>
+
+<span class="c1"># Cubic model</span>
+<span class="n">pa_cubic</span> <span class="o">=</span> <span class="n">PABlock</span><span class="p">(</span><span class="s2">&quot;pa1&quot;</span><span class="p">,</span> <span class="n">PAParams</span><span class="p">(</span><span class="n">gain_db</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">p1db_out_dbm</span><span class="o">=</span><span class="mi">27</span><span class="p">,</span> <span class="n">enable_cubic</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="mixer-and-pll">
+<h3>Mixer and PLL<a class="headerlink" href="#mixer-and-pll" title="Permalink to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">rfmodel.rf.Mixer_PLL_block</span></code> — <code class="docutils literal notranslate"><span class="pre">MixerBlock</span></code>, <code class="docutils literal notranslate"><span class="pre">MixerParams</span></code>, <code class="docutils literal notranslate"><span class="pre">PLL</span></code>, <code class="docutils literal notranslate"><span class="pre">PLLParams</span></code></p>
+<p>The Mixer block combines a frequency conversion model with an integrated PLL phase noise impairment. This makes it the most complex block in the RF chain, as it simultaneously models conversion gain, nonlinearity, noise figure, and LO phase noise.</p>
+<section id="mixer">
+<h4>Mixer<a class="headerlink" href="#mixer" title="Permalink to this heading">#</a></h4>
+<p><strong>Parameters (<code class="docutils literal notranslate"><span class="pre">MixerParams</span></code>)</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">gain_db</span></code></p></td>
+<td><p>Conversion gain in dB</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">iip3_dbm</span></code></p></td>
+<td><p>Input-referred IIP3 in dBm</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nf_db</span></code></p></td>
+<td><p>Noise figure in dB</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">temp_k</span></code></p></td>
+<td><p>Physical temperature (default: 290 K)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pll</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">PLLParams</span></code> instance, or <code class="docutils literal notranslate"><span class="pre">None</span></code> to disable phase noise</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mixer_ideal</span></code></p></td>
+<td><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, bypasses all impairments (gain, NL, noise) — useful for isolating PLL effects</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The nonlinearity and noise models are identical in structure to the LNA. When <code class="docutils literal notranslate"><span class="pre">pll</span></code> is configured, the block first multiplies the input signal by the PLL-generated LO phasor <span class="math notranslate nohighlight">\(e^{j\phi(t)}\)</span>, then applies gain, nonlinearity, and noise.</p>
+</section>
+<section id="pll-phase-noise-model">
+<h4>PLL Phase Noise Model<a class="headerlink" href="#pll-phase-noise-model" title="Permalink to this heading">#</a></h4>
+<p><strong>Parameters (<code class="docutils literal notranslate"><span class="pre">PLLParams</span></code>)</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">VCO_Phase_Noise_dBc</span></code></p></td>
+<td><p>Tuple <code class="docutils literal notranslate"><span class="pre">[dBc,</span> <span class="pre">f_offset]</span></code> specifying the VCO phase noise level at a reference offset</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SLF_dBc</span></code></p></td>
+<td><p>Low-frequency noise floor in dBc/Hz</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">f_L</span></code></p></td>
+<td><p>PLL loop bandwidth in Hz</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Tu</span></code></p></td>
+<td><p>OFDM useful symbol duration (for subcarrier weighting)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">enable_ofdm_weighting</span></code></p></td>
+<td><p>Apply OFDM subcarrier weighting function (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">f_range_limits</span></code></p></td>
+<td><p>Frequency range for PSD evaluation (default: 10 Hz to 10 GHz)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The phase noise PSD combines two regions shaped by the loop filter:</p>
+<ul class="simple">
+<li><p><strong>Inside the loop bandwidth</strong> (<span class="math notranslate nohighlight">\(f &lt; f_L\)</span>): reference oscillator noise, modelled as a flat noise floor (low-pass characteristic)</p></li>
+<li><p><strong>Outside the loop bandwidth</strong> (<span class="math notranslate nohighlight">\(f &gt; f_L\)</span>): free-running VCO noise following a <span class="math notranslate nohighlight">\(1/f^2\)</span> Lorentzian spectrum (high-pass characteristic)</p></li>
+</ul>
+<p>The time-domain LO impairment <span class="math notranslate nohighlight">\(e^{j\phi(t)}\)</span> is generated via an FFT-based shaping method: a white noise spectrum is coloured by the target PSD, then transformed to the time domain to produce the phase trajectory <span class="math notranslate nohighlight">\(\phi(t)\)</span>.</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">enable_ofdm_weighting</span></code> is active, the phase noise PSD is filtered by the OFDM subcarrier response function, directly giving the effective phase noise contribution to each subcarrier rather than the raw single-sideband spectrum.</p>
+<p><strong>What can be demonstrated</strong></p>
+<ul class="simple">
+<li><p>IIP3 and noise figure of the mixer (with PLL disabled)</p></li>
+<li><p>PLL phase noise PSD shape and loop bandwidth effect</p></li>
+<li><p>Phase noise contribution to EVM and constellation rotation/spreading</p></li>
+<li><p>OFDM subcarrier weighting effect on effective phase noise</p></li>
+</ul>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rfmodel.rf.Mixer_PLL_block</span><span class="w"> </span><span class="kn">import</span> <span class="n">MixerBlock</span><span class="p">,</span> <span class="n">MixerParams</span><span class="p">,</span> <span class="n">PLLParams</span>
+
+<span class="n">pll_params</span> <span class="o">=</span> <span class="n">PLLParams</span><span class="p">(</span>
+    <span class="n">VCO_Phase_Noise_dBc</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="mf">1e6</span><span class="p">),</span>
+    <span class="n">SLF_dBc</span><span class="o">=-</span><span class="mi">140</span><span class="p">,</span>
+    <span class="n">f_L</span><span class="o">=</span><span class="mf">10e3</span><span class="p">,</span>
+    <span class="n">Tu</span><span class="o">=</span><span class="mf">3.2e-6</span><span class="p">,</span>
+    <span class="n">enable_ofdm_weighting</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">mixer</span> <span class="o">=</span> <span class="n">MixerBlock</span><span class="p">(</span><span class="s2">&quot;mixer1&quot;</span><span class="p">,</span> <span class="n">MixerParams</span><span class="p">(</span>
+    <span class="n">gain_db</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">iip3_dbm</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">nf_db</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+    <span class="n">pll</span><span class="o">=</span><span class="n">pll_params</span><span class="p">,</span>
+<span class="p">))</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<hr class="docutils" />
+<section id="channel-models">
+<h2>Channel Models<a class="headerlink" href="#channel-models" title="Permalink to this heading">#</a></h2>
+<section id="awgn-channel">
+<h3>AWGN Channel<a class="headerlink" href="#awgn-channel" title="Permalink to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">rfmodel.channel.AWGN</span></code> — <code class="docutils literal notranslate"><span class="pre">AWGNBlock</span></code>, <code class="docutils literal notranslate"><span class="pre">AWGNParams</span></code></p>
+<p>Adds complex Gaussian white noise to the signal at a specified signal-to-noise ratio.</p>
+<p><strong>Parameters</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">snr_db</span></code></p></td>
+<td><p>Signal-to-noise ratio in dB</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The noise power is computed from the <strong>instantaneous signal power</strong> of each input block: <span class="math notranslate nohighlight">\(P_n = P_s / \text{SNR}_\text{linear}\)</span>. Complex Gaussian noise is then drawn with <span class="math notranslate nohighlight">\(\sigma = \sqrt{P_n/2}\)</span> per component. This means the SNR tracks the signal power — if you scale the signal before the AWGN block, the noise scales accordingly.</p>
+<p><strong>What can be demonstrated</strong></p>
+<ul class="simple">
+<li><p>BER vs SNR curves for QAM/OFDM</p></li>
+<li><p>Sensitivity analysis (minimum detectable SNR)</p></li>
+<li><p>Comparison of theoretical and simulated BER</p></li>
+</ul>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rfmodel.channel.AWGN</span><span class="w"> </span><span class="kn">import</span> <span class="n">AWGNBlock</span><span class="p">,</span> <span class="n">AWGNParams</span>
+
+<span class="n">awgn</span> <span class="o">=</span> <span class="n">AWGNBlock</span><span class="p">(</span><span class="s2">&quot;awgn&quot;</span><span class="p">,</span> <span class="n">AWGNParams</span><span class="p">(</span><span class="n">snr_db</span><span class="o">=</span><span class="mi">20</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="path-loss">
+<h3>Path Loss<a class="headerlink" href="#path-loss" title="Permalink to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">rfmodel.channel.path_loss</span></code> — <code class="docutils literal notranslate"><span class="pre">PathLossBlock</span></code>, <code class="docutils literal notranslate"><span class="pre">PathLossParams</span></code></p>
+<p>Applies free-space path loss using the Friis transmission equation.</p>
+<p><strong>Parameters</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">freq_hz</span></code></p></td>
+<td><p>Carrier frequency in Hz</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">distance_m</span></code></p></td>
+<td><p>Link distance in metres</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">tx_ant_gain_db</span></code></p></td>
+<td><p>Transmit antenna gain in dBi (default: 0)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rx_ant_gain_db</span></code></p></td>
+<td><p>Receive antenna gain in dBi (default: 0)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The Friis gain is:</p>
+<div class="math notranslate nohighlight">
+\[G_\text{Friis} = G_t G_r \left(\frac{\lambda}{4\pi d}\right)^2\]</div>
+<p>The received power gain is clamped to <span class="math notranslate nohighlight">\(G_t G_r\)</span> (unity path loss) to avoid physically unrealisable gain at very short distances. A <code class="docutils literal notranslate"><span class="pre">UserWarning</span></code> is raised if <span class="math notranslate nohighlight">\(d &lt; 2\lambda\)</span> (near-field regime).</p>
+<p><strong>What can be demonstrated</strong></p>
+<ul class="simple">
+<li><p>Received power vs distance</p></li>
+<li><p>Link budget calculations</p></li>
+<li><p>Combined path loss + AWGN for a complete propagation channel</p></li>
+</ul>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rfmodel.channel.path_loss</span><span class="w"> </span><span class="kn">import</span> <span class="n">PathLossBlock</span><span class="p">,</span> <span class="n">PathLossParams</span>
+
+<span class="n">pl</span> <span class="o">=</span> <span class="n">PathLossBlock</span><span class="p">(</span><span class="s2">&quot;path_loss&quot;</span><span class="p">,</span> <span class="n">PathLossParams</span><span class="p">(</span>
+    <span class="n">freq_hz</span><span class="o">=</span><span class="mf">2.4e9</span><span class="p">,</span>
+    <span class="n">distance_m</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">tx_ant_gain_db</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">rx_ant_gain_db</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="p">))</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="communications-blocks">
+<h2>Communications Blocks<a class="headerlink" href="#communications-blocks" title="Permalink to this heading">#</a></h2>
+<section id="prbs-bit-source">
+<h3>PRBS Bit Source<a class="headerlink" href="#prbs-bit-source" title="Permalink to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">rfmodel.comms.pseudorandom_NGR</span></code> — <code class="docutils literal notranslate"><span class="pre">PRBSBitSource</span></code>, <code class="docutils literal notranslate"><span class="pre">PRBSParams</span></code></p>
+<p>Generates pseudo-random bit sequences using a linear feedback shift register (LFSR).</p>
+<p><strong>Parameters</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">order</span></code></p></td>
+<td><p>LFSR order: 7 or 15</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">n_bits</span></code></p></td>
+<td><p>Number of bits to generate</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">seed</span></code></p></td>
+<td><p>Initial LFSR state (1 to <span class="math notranslate nohighlight">\(2^\text{order} - 1\)</span>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Supported polynomials: PRBS-7 (<span class="math notranslate nohighlight">\(x^7 + x^6 + 1\)</span>) and PRBS-15 (<span class="math notranslate nohighlight">\(x^{15} + x^{14} + 1\)</span>). The output is a 1D <code class="docutils literal notranslate"><span class="pre">uint8</span></code> array of 0s and 1s, which serves as the input to the QAM modulator.</p>
+</section>
+<hr class="docutils" />
+<section id="qam-modulator">
+<h3>QAM Modulator<a class="headerlink" href="#qam-modulator" title="Permalink to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">rfmodel.comms.QAM_modulator</span></code> — <code class="docutils literal notranslate"><span class="pre">QAMModulator</span></code>, <code class="docutils literal notranslate"><span class="pre">QAMParams</span></code></p>
+<p>Implements square M-QAM modulation with Gray coding.</p>
+<p><strong>Parameters</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">M</span></code></p></td>
+<td><p>Constellation size: 4, 16, 64, or 256</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">gray_map</span></code></p></td>
+<td><p>Enable Gray coding (default: <code class="docutils literal notranslate"><span class="pre">True</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">unit_average_power</span></code></p></td>
+<td><p>Normalise constellation to unit average power (default: <code class="docutils literal notranslate"><span class="pre">True</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The modulator maps groups of <span class="math notranslate nohighlight">\(\log_2 M\)</span> bits to complex symbols drawn from a square QAM constellation. Gray coding ensures that adjacent symbols differ by only one bit, minimising BER at moderate SNR.</p>
+<p><strong>Methods</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">process(signal)</span></code> — maps bit array to complex symbols; the signal’s <code class="docutils literal notranslate"><span class="pre">x</span></code> field must contain a uint8 bit array</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">demap(rx_symbols)</span></code> — hard-decision demapping (nearest-symbol slicing)</p></li>
+</ul>
+<p><strong>What can be demonstrated</strong></p>
+<ul class="simple">
+<li><p>Constellation diagrams (ideal and distorted)</p></li>
+<li><p>BER vs SNR for different modulation orders</p></li>
+<li><p>Effect of phase noise and nonlinearity on constellation spreading</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="ofdm-modulator">
+<h3>OFDM Modulator<a class="headerlink" href="#ofdm-modulator" title="Permalink to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">rfmodel.comms.OFDM_block</span></code> — <code class="docutils literal notranslate"><span class="pre">OFDMModulator</span></code>, <code class="docutils literal notranslate"><span class="pre">OFDMParams</span></code></p>
+<p>Implements OFDM modulation and demodulation with configurable FFT size, cyclic prefix, and subcarrier mapping.</p>
+<p><strong>Parameters</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">n_fft</span></code></p></td>
+<td><p>FFT size (total number of subcarriers)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cp_len</span></code></p></td>
+<td><p>Cyclic prefix length in samples</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">n_data_subcarriers</span></code></p></td>
+<td><p>Number of active (data-carrying) subcarriers</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">normalize_ifft</span></code></p></td>
+<td><p>Apply <span class="math notranslate nohighlight">\(1/\sqrt{N}\)</span> IFFT normalisation (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">null_dc</span></code></p></td>
+<td><p>Null the DC subcarrier (default: <code class="docutils literal notranslate"><span class="pre">True</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Modulation process</strong></p>
+<ol class="arabic simple">
+<li><p>Input QAM symbols are grouped into OFDM blocks of <code class="docutils literal notranslate"><span class="pre">n_data_subcarriers</span></code> symbols each</p></li>
+<li><p>Symbols are placed on active subcarriers symmetrically around DC (if <code class="docutils literal notranslate"><span class="pre">null_dc=True</span></code>) or sequentially</p></li>
+<li><p>An IFFT maps the frequency-domain block to a time-domain OFDM symbol</p></li>
+<li><p>A cyclic prefix of length <code class="docutils literal notranslate"><span class="pre">cp_len</span></code> is prepended to each symbol</p></li>
+</ol>
+<p><strong>Demodulation</strong> reverses this process: strip CP, FFT, extract active subcarriers.</p>
+<p><strong>What can be demonstrated</strong></p>
+<ul class="simple">
+<li><p>OFDM spectrum (flat over active subcarriers, guard bands at edges)</p></li>
+<li><p>Effect of cyclic prefix on multipath robustness</p></li>
+<li><p>EVM degradation from phase noise, nonlinearity, or AWGN</p></li>
+<li><p>Per-subcarrier SNR analysis</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="measurement-and-analysis">
+<h2>Measurement and Analysis<a class="headerlink" href="#measurement-and-analysis" title="Permalink to this heading">#</a></h2>
+<section id="spectrum-analyser">
+<h3>Spectrum Analyser<a class="headerlink" href="#spectrum-analyser" title="Permalink to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">rfmodel.meas.spectrum_analyser</span></code> — <code class="docutils literal notranslate"><span class="pre">spectrum_analyser(x,</span> <span class="pre">fs,</span> <span class="pre">tol=1e-12)</span></code></p>
+<p>Computes the power spectrum of a signal.</p>
+<p><strong>Returns</strong> <code class="docutils literal notranslate"><span class="pre">(P_bin_W,</span> <span class="pre">freq)</span></code> where:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">P_bin_W</span></code> — power per FFT bin in watts</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">freq</span></code> — corresponding frequency array in Hz</p></li>
+</ul>
+<p><strong>Behaviour</strong></p>
+<ul class="simple">
+<li><p>Real signals: uses <code class="docutils literal notranslate"><span class="pre">rfft</span></code>, corrects for one-sided representation (doubles non-DC/Nyquist bins)</p></li>
+<li><p>Complex signals: uses full FFT, no symmetry correction</p></li>
+</ul>
+<p>The function issues a coherent sampling warning if a spectral peak shows significant energy in adjacent bins, indicating spectral leakage.</p>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rfmodel.meas.spectrum_analyser</span><span class="w"> </span><span class="kn">import</span> <span class="n">spectrum_analyser</span>
+
+<span class="n">P</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="n">spectrum_analyser</span><span class="p">(</span><span class="n">sig</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">sig</span><span class="o">.</span><span class="n">fs_hz</span><span class="p">)</span>
+<span class="n">P_dbm</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">P</span> <span class="o">/</span> <span class="mf">1e-3</span> <span class="o">+</span> <span class="mf">1e-30</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="phase-noise-analyser">
+<h3>Phase Noise Analyser<a class="headerlink" href="#phase-noise-analyser" title="Permalink to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">rfmodel.meas.phase_noise_analyser</span></code> — <code class="docutils literal notranslate"><span class="pre">calculate_phase_noise_curve(...)</span></code></p>
+<p>Extracts a phase noise curve from a modulated or CW signal by unwrapping the instantaneous phase and computing its power spectral density via Welch’s method.</p>
+<p><strong>Key parameters</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">y</span></code></p></td>
+<td><p>Complex input signal</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">fs</span></code></p></td>
+<td><p>Sampling rate in Hz</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nperseg</span></code></p></td>
+<td><p>Welch segment length (default: <span class="math notranslate nohighlight">\(2^{14}\)</span>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">target_offset</span></code></p></td>
+<td><p>Offset frequency at which to report phase noise (default: 1 MHz)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">band</span></code></p></td>
+<td><p>Number of bins to average around target offset</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Returns</strong> <code class="docutils literal notranslate"><span class="pre">(offset_freq,</span> <span class="pre">L_f_dBc_Hz,</span> <span class="pre">pn_at_target)</span></code> — the phase noise curve, and the value at the specified offset frequency.</p>
+<p><strong>What can be demonstrated</strong></p>
+<ul class="simple">
+<li><p>Measured PLL phase noise vs configured model</p></li>
+<li><p>Loop bandwidth identification from the PSD shape</p></li>
+<li><p>Integrated phase noise over a specified bandwidth</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="plotting-utilities">
+<h2>Plotting Utilities<a class="headerlink" href="#plotting-utilities" title="Permalink to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">rfmodel.plot_utils</span></code> provides a set of high-level plotting functions for common RF and communications visualisations.</p>
+<section id="spectrum-plot">
+<h3>Spectrum plot<a class="headerlink" href="#spectrum-plot" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rfmodel.plot_utils.spectrum_plot</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_top_spectrum</span>
+<span class="n">plot_top_spectrum</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">P_bin_W</span><span class="p">,</span> <span class="n">n_peaks</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Plots a power spectrum in dBm, annotates the strongest peaks, and optionally zooms to the signal region.</p>
+</section>
+<section id="ofdm-and-constellation-plots">
+<h3>OFDM and constellation plots<a class="headerlink" href="#ofdm-and-constellation-plots" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rfmodel.plot_utils.OFDM_plots</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">plot_constellation</span><span class="p">,</span>
+    <span class="n">plot_ofdm_frequency_bins</span><span class="p">,</span>
+    <span class="n">plot_time_signal</span><span class="p">,</span>
+    <span class="n">plot_spectrum</span><span class="p">,</span>
+    <span class="n">plot_bits</span><span class="p">,</span>
+    <span class="n">plot_constellation_with_bits</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">plot_constellation(x)</span></code></p></td>
+<td><p>Scatter plot of complex symbols</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">plot_constellation_with_bits(symbols,</span> <span class="pre">bits,</span> <span class="pre">...)</span></code></p></td>
+<td><p>Constellation with bit labels annotated</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">plot_ofdm_frequency_bins(Xk)</span></code></p></td>
+<td><p>Stem plot of FFT bin magnitudes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">plot_time_signal(x)</span></code></p></td>
+<td><p>Real and imaginary parts vs sample index</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">plot_spectrum(x,</span> <span class="pre">fs_hz)</span></code></p></td>
+<td><p>Magnitude spectrum in dB</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">plot_bits(bits)</span></code></p></td>
+<td><p>Step plot of a bit sequence</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="pipeline-diagram">
+<h3>Pipeline diagram<a class="headerlink" href="#pipeline-diagram" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rfmodel.plot_utils.plot_block_diagram</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_pipeline</span>
+<span class="n">plot_pipeline</span><span class="p">(</span><span class="n">pipe</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Draws a schematic of the pipeline with blocks rendered as rectangles. Mixer blocks are shown as circles with a cross (standard mixer symbol) with the PLL shown as a sub-block below. Useful for quickly visualising a configured system.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./docs"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="core_framework.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Core Framework</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="examples_intro.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Examples</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rf-devices">RF Devices</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lna-low-noise-amplifier">LNA — Low Noise Amplifier</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pa-power-amplifier">PA — Power Amplifier</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mixer-and-pll">Mixer and PLL</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mixer">Mixer</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pll-phase-noise-model">PLL Phase Noise Model</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#channel-models">Channel Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#awgn-channel">AWGN Channel</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#path-loss">Path Loss</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#communications-blocks">Communications Blocks</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prbs-bit-source">PRBS Bit Source</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qam-modulator">QAM Modulator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ofdm-modulator">OFDM Modulator</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#measurement-and-analysis">Measurement and Analysis</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spectrum-analyser">Spectrum Analyser</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#phase-noise-analyser">Phase Noise Analyser</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-utilities">Plotting Utilities</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spectrum-plot">Spectrum plot</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ofdm-and-constellation-plots">OFDM and constellation plots</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline-diagram">Pipeline diagram</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By PhillipRambo
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
