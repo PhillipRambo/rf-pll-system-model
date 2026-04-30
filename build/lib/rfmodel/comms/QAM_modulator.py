@@ -113,6 +113,52 @@ class QAMModulator(Block):
 
         return s.copy_with(x=y, meta=meta)
 
+    def demap(self, rx_syms: np.ndarray) -> np.ndarray:
+        """
+        Hard-decision inverse of process().
+
+        Input
+        -----
+        rx_syms : 1D complex array of received QAM symbols
+
+        Output
+        ------
+        1D uint8 bit array, same ordering as process() input:
+        [I-bits (MSB first) | Q-bits (MSB first)] per symbol.
+        """
+        rx = np.asarray(rx_syms)
+
+        if rx.ndim != 1:
+            raise ValueError("demap expects a 1D complex array")
+        if not np.iscomplexobj(rx):
+            raise ValueError("demap expects complex QAM symbols as input")
+
+        # Undo unit-average-power scaling so levels are +/-1,3,5,...
+        if self.params.unit_average_power:
+            rx = rx * np.sqrt((2.0 / 3.0) * (self.params.M - 1))
+
+        sqrt_M = self.sqrt_M
+        k_axis = self.bits_per_axis
+
+        # Slice real/imag to nearest PAM index (0..sqrt_M-1)
+        def slice_axis(a: np.ndarray) -> np.ndarray:
+            idx = np.round((a + (sqrt_M - 1)) / 2).astype(np.int64)
+            return np.clip(idx, 0, sqrt_M - 1).astype(np.uint32)
+
+        i_idx = slice_axis(rx.real)
+        q_idx = slice_axis(rx.imag)
+
+        if self.params.gray_map:
+            i_idx = self._gray_to_binary(i_idx)
+            q_idx = self._gray_to_binary(q_idx)
+
+        # Unpack each index into k_axis bits (MSB first)
+        shifts = np.arange(k_axis - 1, -1, -1)
+        i_bits = ((i_idx[:, None] >> shifts) & 1).astype(np.uint8)
+        q_bits = ((q_idx[:, None] >> shifts) & 1).astype(np.uint8)
+
+        return np.concatenate([i_bits, q_bits], axis=1).ravel()
+
     @staticmethod
     def _bits_to_int(b: np.ndarray) -> np.ndarray:
         """
@@ -137,3 +183,20 @@ class QAMModulator(Block):
         """
         x = x.astype(np.uint32)
         return x ^ (x >> 1)
+
+    @staticmethod
+    def _gray_to_binary(g: np.ndarray) -> np.ndarray:
+        """
+        Inverse of _binary_to_gray. Valid for any bit-width up to 32.
+
+        Formula (iterative XOR of right-shifted copies):
+            b = g; shift = 1
+            while shift < width: b ^= b >> shift; shift <<= 1
+        """
+        g = g.astype(np.uint32)
+        b = g.copy()
+        shift = 1
+        while shift < 32:
+            b ^= b >> shift
+            shift <<= 1
+        return b

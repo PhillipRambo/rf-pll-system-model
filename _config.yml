@@ -1,0 +1,16 @@
+title: RF PLL System Model
+author: PhillipRambo
+
+execute:
+  execute_notebooks: "off"
+
+html:
+  use_issues_button: true
+  use_repository_button: true
+
+repository:
+  url: https://github.com/PhillipRambo/rf-pll-system-model
+
+latex:
+  latex_documents:
+    targetname: book.tex

@@ -21,7 +21,7 @@ def plot_pipeline(pipe):
         x = i * spacing
         y = 0
         
-        if blk.name == mixer_name:
+        if blk.type_name == "mixer":
             # --- Draw the Mixer (Circle with an 'X') ---
             mixer_center = (x + block_width/2, y)
             circle = plt.Circle(mixer_center, 0.4, facecolor="white", edgecolor="black", zorder=3)

@@ -49,6 +49,6 @@ pipeline:
       nf_db: 5
 
       pll:
-        VCO_PhaseNoise: [-115, 1e6]   # [dBc, f_offset]
+        VCO_PhaseNoise: [-115, 1e6]   
         LF_noise_floor: -140
         loop_bandwidth: 30e3  

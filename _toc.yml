@@ -1,0 +1,44 @@
+format: jb-book
+root: intro
+
+parts:
+  - caption: Core Framework
+    chapters:
+      - file: docs/core_framework
+
+  - caption: Components
+    chapters:
+      - file: docs/components
+
+  - caption: Device Verification
+    chapters:
+      - file: docs/examples/lna_nonlinear
+        sections:
+          - file: test_benches/Devices/LNA/LNA_Verification_Non_linear
+      - file: docs/examples/lna_noise
+        sections:
+          - file: test_benches/Devices/LNA/LNA_Verification_noise
+      - file: docs/examples/pa_test
+        sections:
+          - file: test_benches/Devices/PA/PA_test
+      - file: docs/examples/mixer_verification
+        sections:
+          - file: test_benches/Devices/Mixer_PLL/Mixer_Verification
+      - file: docs/examples/pll_verification
+        sections:
+          - file: test_benches/Devices/Mixer_PLL/PLL_Verification
+
+  - caption: System Verification
+    chapters:
+      - file: docs/examples/channel_modelling
+        sections:
+          - file: test_benches/System/Channel/Channel_modelling
+      - file: docs/examples/ofdm_qam
+        sections:
+          - file: test_benches/System/OFDM_QAM/OFDM_QAM_test
+      - file: docs/examples/payload
+        sections:
+          - file: test_benches/System/Payload_Generation/payload
+      - file: docs/examples/performance
+        sections:
+          - file: verification/Performance_Verification

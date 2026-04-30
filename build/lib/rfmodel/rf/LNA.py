@@ -50,12 +50,9 @@ class LNABlock(Block):
 
         # 2. Correct Nonlinearity: x * |x|^2
         # Relate IIP3 to the cubic coefficient alpha_3 (complex)
-        # Standard: |alpha_3 / alpha| = 2 / P_iip3 (linear power)
         Pin_iip3_w = dbm_to_w(p.IP3_dbm)
         beta = alpha * (2.0 / Pin_iip3_w)
         
-        # Note: beta needs to be complex if you want to model AM-PM distortion, 
-        # otherwise real if just gain compression.
         y = alpha * x - beta * (np.abs(x)**2) * x
 
         # ---- Added output noise from NF ----
@@ -64,7 +61,6 @@ class LNABlock(Block):
         k = 1.380649e-23
         noise_psd_w_per_hz = (F - 1.0) * k * p.temp_k * G
 
-        # Complex envelope sampled at fs represents RF bandwidth B = fs/2.
         B_hz = s.fs_hz / 2.0
         Pn_out_added_w = noise_psd_w_per_hz * B_hz  # [W] = E[|n|^2] per sample
 

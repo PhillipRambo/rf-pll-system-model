@@ -12,22 +12,30 @@ class PAParams:
     gain_db: float
     p1db_out_dbm: float
     smoothness_p: float = 2.0
+    enable_cubic: bool = False
 
 
 class PABlock(Block):
     """
-    Simple spec-driven PA model using a Rapp-like AM-AM law.
+    Spec-driven PA model with two selectable AM-AM laws:
+      - Rapp-like soft compression (default)
+      - Memoryless cubic: y = alpha*x - beta*|x|^2 * x
+
+    Signal convention
+    -----------------
+    Power-normalized complex envelope: |x|^2 is instantaneous power in W.
+    alpha = sqrt(G) is dimensionless, beta has units [1/W].
 
     Parameters
     ----------
     gain_db :
         Small-signal power gain in dB.
-
     p1db_out_dbm :
         Output 1 dB compression point in dBm.
-
     smoothness_p :
-        Controls knee sharpness. Larger => sharper transition.
+        Rapp knee sharpness. Larger => sharper transition.
+    enable_cubic :
+        If True, use the cubic AM-AM law instead of Rapp.
     """
 
     type_name = "pa"
@@ -39,32 +47,30 @@ class PABlock(Block):
         if params.smoothness_p <= 0:
             raise ValueError("smoothness_p must be > 0")
 
-        self.G = db_to_linear(params.gain_db)      # power gain
-        self.g = np.sqrt(self.G)                   # amplitude gain
+        self.G = db_to_linear(params.gain_db)
+        self.alpha = np.sqrt(self.G)
+        self.g = self.alpha
         self.p = params.smoothness_p
 
-        # Actual output power at 1 dB compression
         P1dB_out_w = dbm_to_w(params.p1db_out_dbm)
         r_out_1dB = np.sqrt(P1dB_out_w)
-
-        # 1 dB compression in amplitude
         c = 10.0 ** (-1.0 / 20.0)
 
-        # Find linear output amplitude that would be 1 dB above actual
+        # Rapp: solve Asat so compression is exactly 1 dB at P1dB_out
         r_lin_1dB = r_out_1dB / c
-
-        # Solve Rapp parameter Asat so that compression is exactly 1 dB there
-  
         self.Asat = r_lin_1dB / ((c ** (-2.0 * self.p) - 1.0) ** (1.0 / (2.0 * self.p)))
+
+        self.beta_cubic = (1-c) * c**2 * ( self.alpha**3 / (P1dB_out_w) )
 
     def process(self, s: Signal) -> Signal:
         x = s.x
+
+        if self.params.enable_cubic:
+            y = self.alpha * x - self.beta_cubic * (np.abs(x) ** 2) * x
+            return s.copy_with(x=y)
+
         r = np.abs(x)
-
-        # Linear output amplitude before compression
         r_lin = self.g * r
-
-        # Rapp AM-AM compression
         r_out = r_lin / (1.0 + (r_lin / self.Asat) ** (2.0 * self.p)) ** (1.0 / (2.0 * self.p))
 
         gain_amp = np.zeros_like(r_out)
