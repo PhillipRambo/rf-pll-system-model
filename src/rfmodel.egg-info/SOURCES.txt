@@ -24,6 +24,8 @@ src/rfmodel/core/pipeline_builder.py
 src/rfmodel/core/random.py
 src/rfmodel/core/signal.py
 src/rfmodel/core/units.py
+src/rfmodel/core/test/pipeline_builder.py
+src/rfmodel/core/test/test_pipeline.py
 src/rfmodel/meas/__init__.py
 src/rfmodel/meas/phase_noise_analyser.py
 src/rfmodel/meas/spectrum_analyser.py
@@ -37,8 +39,3 @@ src/rfmodel/rf/Mixer_PLL_block.py
 src/rfmodel/rf/PA.py
 src/rfmodel/rf/__init__.py
 src/rfmodel/rf/registry.py
-src/rfmodel/system/__init__.py
-src/rfmodel/system/link_budget.py
-src/rfmodel/system/script_tester.py
-src/rfmodel/test/pipeline_builder.py
-src/rfmodel/test/test_pipeline.py

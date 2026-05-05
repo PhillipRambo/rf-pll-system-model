@@ -99,7 +99,7 @@ class MixerBlock(Block):
         G = db_to_linear(p.gain_db)
         alpha_lin = np.sqrt(G)
 
-        beta = alpha_lin * (2.0 / dbm_to_w(p.iip3_dbm))
+        beta = alpha_lin / (2.0 * dbm_to_w(p.iip3_dbm))
         y = alpha_lin * x - beta * (np.abs(x)**2) * x
 
         # Noise stage

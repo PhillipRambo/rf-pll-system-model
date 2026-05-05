@@ -51,7 +51,7 @@ class LNABlock(Block):
         # 2. Correct Nonlinearity: x * |x|^2
         # Relate IIP3 to the cubic coefficient alpha_3 (complex)
         Pin_iip3_w = dbm_to_w(p.IP3_dbm)
-        beta = alpha * (2.0 / Pin_iip3_w)
+        beta = alpha / (2.0 * Pin_iip3_w)
         
         y = alpha * x - beta * (np.abs(x)**2) * x
 

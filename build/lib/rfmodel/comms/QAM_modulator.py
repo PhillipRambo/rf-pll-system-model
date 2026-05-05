@@ -82,10 +82,10 @@ class QAMModulator(Block):
         i_idx = self._bits_to_int(i_bits)
         q_idx = self._bits_to_int(q_bits)
 
-        # Apply Gray mapping inside the modulator
+        # Treat input bits as Gray code; decode to natural PAM index
         if self.params.gray_map:
-            i_idx = self._binary_to_gray(i_idx)
-            q_idx = self._binary_to_gray(q_idx)
+            i_idx = self._gray_to_binary(i_idx)
+            q_idx = self._gray_to_binary(q_idx)
 
         # Map indices 0...(sqrt(M)-1) to odd PAM levels
         # Example for 64-QAM:
@@ -149,8 +149,8 @@ class QAMModulator(Block):
         q_idx = slice_axis(rx.imag)
 
         if self.params.gray_map:
-            i_idx = self._gray_to_binary(i_idx)
-            q_idx = self._gray_to_binary(q_idx)
+            i_idx = self._binary_to_gray(i_idx)
+            q_idx = self._binary_to_gray(q_idx)
 
         # Unpack each index into k_axis bits (MSB first)
         shifts = np.arange(k_axis - 1, -1, -1)

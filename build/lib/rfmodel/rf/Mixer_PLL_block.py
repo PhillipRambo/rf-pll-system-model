@@ -69,9 +69,6 @@ class MixerParams:
     gain_db: float
     iip3_dbm: float
     nf_db: float
-    iq_amp_imb_db: float = 0.0
-    iq_phase_imb_deg: float = 0.0
-    dc_offset_complex: complex = 0.0 + 0.0j
     temp_k: float = 290.0
     pll: PLLParams | None = None
     mixer_ideal: bool = False 
@@ -102,7 +99,7 @@ class MixerBlock(Block):
         G = db_to_linear(p.gain_db)
         alpha_lin = np.sqrt(G)
 
-        beta = alpha_lin * (2.0 / dbm_to_w(p.iip3_dbm))
+        beta = alpha_lin / (2.0 * dbm_to_w(p.iip3_dbm))
         y = alpha_lin * x - beta * (np.abs(x)**2) * x
 
         # Noise stage
@@ -118,14 +115,9 @@ class MixerBlock(Block):
             self._rng.normal(0.0, sigma, size=y.shape)
             + 1j * self._rng.normal(0.0, sigma, size=y.shape)
         )
-        y = y + n
+        y_final = y + n
 
-        g_imb = db_to_linear(p.iq_amp_imb_db)
-        phi_imb = np.radians(p.iq_phase_imb_deg)
-        I, Q = np.real(y), np.imag(y)
-        y_impaired = I + 1j * (g_imb * (Q * np.cos(phi_imb) - I * np.sin(phi_imb)))
 
-        y_final = y_impaired + p.dc_offset_complex
 
         return s.copy_with(x=y_final)
     
