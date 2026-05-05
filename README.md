@@ -16,7 +16,7 @@ A Python package for behavioural simulation of RF signal chains with integrated 
 Requires Python >= 3.10.
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/PhillipRambo/rf-system-model.git
 cd rf-system-model
 pip install -e .
 ```
